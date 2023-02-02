@@ -1,18 +1,16 @@
 package it.univr.satella.drivers;
 
-import it.univr.satella.drivers.ISensorDriver;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * This repo contains all published sensor drivers
+ * Repository responsible for loading and storing all published sensor drivers
  */
 @Repository
 public class SensorDriverRepository {
@@ -22,13 +20,12 @@ public class SensorDriverRepository {
      */
     @Autowired
     @SensorDriverPublish
-    private List<SensorDriver> sensorDriverList;
-
+    private List<SensorDriver> publishedSensorDrivers;
 
     @PostConstruct
     public void printSensorDrivers() {
         Logger log = LoggerFactory.getLogger(SensorDriverRepository.class);
-        for (ISensorDriver driver : sensorDriverList)
+        for (ISensorDriver driver : publishedSensorDrivers)
             log.info("Found driver: " + driver.getId());
     }
 
@@ -37,7 +34,7 @@ public class SensorDriverRepository {
      * @param id The driver name and its version, for example drok-driver[0.0.1]
      */
     public Optional<SensorDriver> getDriver(String id) {
-        return sensorDriverList.stream()
+        return publishedSensorDrivers.stream()
                 .filter(driver -> driver.getId().equals(id))
                 .findFirst();
     }

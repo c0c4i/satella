@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.HashMap;
 
+/**
+ * All supported types of unit of measurement of the sensors
+ */
 public enum MeasureType {
     Temperature,
     Pressure,
@@ -21,7 +24,7 @@ public enum MeasureType {
     /**
      * Describes how to load a measure from a string, this is more
      * flexible than the standard method as is allows combinations
-     * of uppercase and lowercase.
+     * of uppercase and lowercase values.
      */
     @JsonCreator
     public static MeasureType forValue(String value) {

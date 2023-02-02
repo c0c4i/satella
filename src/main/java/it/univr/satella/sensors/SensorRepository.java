@@ -8,29 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 
+/**
+ * Repository responsible for storing and retrieving all
+ * known sensor descriptors
+ */
 @Repository
 public class SensorRepository {
-
-    /**
-     * All known sensors types
-     */
-    private List<SensorDescriptor> sensorDescriptorList;
-
-    /**
-     * Load all sensors in sensors.json
-     */
-    public SensorRepository() {
-        // TODO
-    }
-
-    /**
-     *
-     * @param name
-     * @return
-     */
-    Optional<SensorDescriptor> findById(String name) {
-        return sensorDescriptorList.stream()
-                .filter(x -> x.getModel().equals(name))
-                .findFirst();
-    }
+    // TODO
 }

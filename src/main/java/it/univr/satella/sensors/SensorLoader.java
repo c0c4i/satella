@@ -13,15 +13,16 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 
+/**
+ * This component is responsible for loading all sensor descriptors
+ * present in the sensors.json configuration file
+ */
 @Component
 public class SensorLoader {
 
-    //@Autowired
-    //private SensorRepository sensorRepository;
+    @Autowired
+    private SensorRepository sensorRepository;
 
-    /**
-     * Load all sensor definitions
-     */
     @PostConstruct
     public void loadSensors() throws IOException {
         Logger log = LoggerFactory.getLogger(SensorLoader.class);
@@ -32,8 +33,9 @@ public class SensorLoader {
 
         for (SensorDescriptor value : sensorDescriptors) {
             log.info("Found sensor descriptor: " + value.getModel());
+
+            // TODO
             //sensorRepository.save(value);
         }
     }
-
 }
