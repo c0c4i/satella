@@ -3,6 +3,7 @@ package it.univr.satella.descriptors;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Describes the capability of the station
@@ -10,11 +11,11 @@ import java.util.List;
  */
 public class StationDescriptor {
 
-    private class Slot {
+    public static class SlotDescriptor {
         @JsonProperty
-        private float voltage;
+        public float voltage;
         @JsonProperty
-        private float amperage;
+        public float amperage;
     }
 
     @JsonProperty
@@ -24,5 +25,9 @@ public class StationDescriptor {
     @JsonProperty
     private String vendor;
     @JsonProperty
-    private List<Slot> slots;
+    private List<SlotDescriptor> slots;
+
+    public Optional<SlotDescriptor> getSlot(int index) {
+        return Optional.ofNullable(slots.get(index));
+    }
 }
