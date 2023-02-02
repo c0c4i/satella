@@ -8,6 +8,12 @@ import java.util.Optional;
 
 public interface ISensorDriver {
 
+
+    /**
+     * All sensors must have an id of the form "name[version]"
+     */
+    String getId();
+
     /**
      *
      * @param descriptor

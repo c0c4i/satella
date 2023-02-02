@@ -3,13 +3,15 @@ package it.univr.satella.drivers.implementation;
 import ch.qos.logback.core.joran.sanity.Pair;
 import it.univr.satella.descriptors.MeasureType;
 import it.univr.satella.descriptors.SensorDescriptor;
-import it.univr.satella.drivers.AbstractSensorDriver;
-import it.univr.satella.drivers.PublishedSensorDriver;
+import it.univr.satella.drivers.SensorDriver;
+import it.univr.satella.drivers.SensorDriverPublish;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@PublishedSensorDriver
-public class DROKBasicDriver extends AbstractSensorDriver {
+@Component
+@SensorDriverPublish
+public class DROKBasicDriver extends SensorDriver {
 
     public DROKBasicDriver() {
         super("drok-driver", "0.0.1");

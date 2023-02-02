@@ -10,6 +10,6 @@
     "min_amperage": 1.9,
     "max_amperage": 2.3,
     "sample_delay_sec": 5,
-    "driver": "drok-driver-0.4.3"
+    "driver": "drok-driver[0.0.1]"
   }
 ]
