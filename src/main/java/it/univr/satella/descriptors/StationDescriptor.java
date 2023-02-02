@@ -1,5 +1,7 @@
 package it.univr.satella.descriptors;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -8,14 +10,19 @@ import java.util.List;
  */
 public class StationDescriptor {
 
-    private class SlotDescriptor {
+    private class Slot {
+        @JsonProperty
         private float voltage;
+        @JsonProperty
         private float amperage;
     }
 
+    @JsonProperty
     private String version;
+    @JsonProperty
     private String model;
+    @JsonProperty
     private String vendor;
-
-    private List<SlotDescriptor> slots;
+    @JsonProperty
+    private List<Slot> slots;
 }
