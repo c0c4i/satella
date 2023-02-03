@@ -1,11 +1,11 @@
 package it.univr.satella.drivers;
 
-public abstract class SensorDriver implements ISensorDriver, Cloneable {
+public abstract class SensorDriver implements ISensorDriver {
 
     private String name;
     private String version;
 
-    public SensorDriver(String name, String version) {
+    protected SensorDriver(String name, String version) {
         this.name = name;
         this.version = version;
     }

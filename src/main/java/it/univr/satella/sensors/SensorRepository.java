@@ -31,21 +31,17 @@ public class SensorRepository {
      * Construct the repository by loading all descriptors
      * in the sensors.json file
      */
-    public SensorRepository(
-            @Value("${satella.filepath.sensors}") String filepath)
+    public SensorRepository(@Value("${satella.filepath.sensors}") String filepath)
+    throws IOException
     {
         ObjectMapper mapper = new ObjectMapper();
-        try {
-            SensorDescriptor[] values = mapper.readValue(
-                    Paths.get(filepath).toFile(),
-                    SensorDescriptor[].class
-            );
-            for (SensorDescriptor value : values) {
-                log.info("Found sensor descriptor: " + value.getModel());
-                sensorDescriptorList.add(value);
-            }
-        } catch (IOException e) {
-            log.error("Unable to load sensors.json file");
+        SensorDescriptor[] values = mapper.readValue(
+                Paths.get(filepath).toFile(),
+                SensorDescriptor[].class
+        );
+        for (SensorDescriptor value : values) {
+            log.info("Found sensor descriptor: " + value.getModel());
+            sensorDescriptorList.add(value);
         }
     }
 
