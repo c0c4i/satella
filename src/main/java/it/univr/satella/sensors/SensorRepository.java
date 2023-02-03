@@ -1,9 +1,14 @@
 package it.univr.satella.sensors;
 
-import it.univr.satella.descriptors.SensorDescriptor;
-import org.springframework.stereotype.Repository;
-//import org.springframework.data.jpa.repository.JpaRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +17,44 @@ import java.util.Optional;
  * Repository responsible for storing and retrieving all
  * known sensor descriptors
  */
-@Repository
+@Component
 public class SensorRepository {
-    // TODO
+
+    static Logger log = LoggerFactory.getLogger(SensorRepository.class);
+
+    /**
+     * All known sensors
+     */
+    private List<SensorDescriptor> sensorDescriptorList = new ArrayList<>();
+
+    /**
+     * Construct the repository by loading all descriptors
+     * in the sensors.json file
+     */
+    public SensorRepository(
+            @Value("${satella.filepath.sensors}") String filepath)
+    {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            SensorDescriptor[] values = mapper.readValue(
+                    Paths.get(filepath).toFile(),
+                    SensorDescriptor[].class
+            );
+            for (SensorDescriptor value : values) {
+                log.info("Found sensor descriptor: " + value.getModel());
+                sensorDescriptorList.add(value);
+            }
+        } catch (IOException e) {
+            log.error("Unable to load sensors.json file");
+        }
+    }
+
+    /**
+     * Retrieves a sensor descriptor by its model
+     */
+    public Optional<SensorDescriptor> getByModel(String model) {
+        return sensorDescriptorList.stream()
+                .filter(x -> x.getModel().equals(model))
+                .findFirst();
+    }
 }

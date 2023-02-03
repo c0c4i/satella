@@ -1,8 +1,9 @@
 package it.univr.satella.drivers.implementation;
 
 import ch.qos.logback.core.joran.sanity.Pair;
-import it.univr.satella.descriptors.MeasureType;
-import it.univr.satella.descriptors.SensorDescriptor;
+import it.univr.satella.sensors.MeasureType;
+import it.univr.satella.sensors.SensorDescriptor;
+import it.univr.satella.drivers.ISensorDriver;
 import it.univr.satella.drivers.SensorDriver;
 import it.univr.satella.drivers.SensorDriverPublish;
 import org.springframework.stereotype.Component;
@@ -18,18 +19,23 @@ public class DROKBasicDriver extends SensorDriver {
     }
 
     @Override
+    public ISensorDriver copy() {
+        return new DROKBasicDriver();
+    }
+
+    @Override
     public boolean isCompatible(SensorDescriptor descriptor) {
         return false;
     }
 
     @Override
     public void initialize(SensorDescriptor descriptor, int port) {
-
+        // FAKE
     }
 
     @Override
     public void shutdown() {
-
+        // FAKE
     }
 
     @Override

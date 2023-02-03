@@ -1,4 +1,4 @@
-package it.univr.satella.descriptors;
+package it.univr.satella.sensors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 

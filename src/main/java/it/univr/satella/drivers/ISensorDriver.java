@@ -1,8 +1,8 @@
 package it.univr.satella.drivers;
 
 import ch.qos.logback.core.joran.sanity.Pair;
-import it.univr.satella.descriptors.MeasureType;
-import it.univr.satella.descriptors.SensorDescriptor;
+import it.univr.satella.sensors.MeasureType;
+import it.univr.satella.sensors.SensorDescriptor;
 
 import java.util.Optional;
 
@@ -12,11 +12,19 @@ import java.util.Optional;
  */
 public interface ISensorDriver {
 
-
     /**
      * All sensors must have an id of the form "name[version]"
      */
     String getId();
+
+    /**
+     * Prototype Pattern
+     * Returns a clone of the driver object, this is useful
+     * as it allows us to store an instance of the driver in the
+     * repository and generate unique clones for all sensors that need
+     * this specific driver.
+     */
+    ISensorDriver copy();
 
     /**
      * Check if a sensor can be managed by this driver

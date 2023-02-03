@@ -13,6 +13,5 @@ import java.lang.annotation.Target;
  * automatically loaded by the system at startup and added to the
  * sensor driver repository.
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Qualifier
 public @interface SensorDriverPublish { }

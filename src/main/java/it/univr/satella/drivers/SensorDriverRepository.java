@@ -28,8 +28,8 @@ public class SensorDriverRepository {
      * All published sensor drivers
      */
     @Autowired
-    //@SensorDriverPublish
-    private List<SensorDriver> publishedSensorDrivers;
+    @SensorDriverPublish
+    private List<ISensorDriver> publishedSensorDrivers;
 
     /**
      * All published sensors ready to be instantiated
@@ -41,40 +41,18 @@ public class SensorDriverRepository {
         Logger log = LoggerFactory.getLogger(SensorDriverRepository.class);
         for (ISensorDriver driver : publishedSensorDrivers)
             log.info("Found driver: " + driver.getId());
-
-        // Create a scanner for all classes with the SensorDriverPublish annotation
-        ClassPathScanningCandidateComponentProvider scanner;
-        scanner = new ClassPathScanningCandidateComponentProvider(false);
-        scanner.addIncludeFilter(new AnnotationTypeFilter(SensorDriverPublish.class));
-        Set<BeanDefinition> beanDefs = scanner
-                .findCandidateComponents("it.univr.satella.drivers.implementation");
-
-        // Save all beans ready for construction
-        for (BeanDefinition bean : beanDefs) {
-            try {
-
-                String driverName = bean.getBeanClassName();
-                Class<?> c = BeanGenerator.class.getClassLoader().loadClass(driverName);
-                ISensorDriver driver = (ISensorDriver)c.getConstructor().newInstance();
-                System.out.print(driver.getId());
-
-
-            } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException |
-                     InvocationTargetException e) {
-
-                throw new RuntimeException(e);
-            }
-        }
-
     }
 
     /**
-     * Returns a published driver by its id
+     * Returns a clone of a published driver by its id
      * @param id The driver name and its version, for example drok-driver[0.0.1]
      */
-    public Optional<SensorDriver> getDriver(String id) {
-        return publishedSensorDrivers.stream()
+    public Optional<ISensorDriver> getDriver(String id) {
+        Optional<ISensorDriver> found = publishedSensorDrivers.stream()
                 .filter(driver -> driver.getId().equals(id))
                 .findFirst();
+
+        // Create a clone
+        return found.map(ISensorDriver::copy);
     }
 }
