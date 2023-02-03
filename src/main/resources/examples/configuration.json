@@ -1,10 +1,10 @@
 [
   {
     "sensor": "drok-temperature-mk1",
-    "port": 0
+    "slot": 0
   },
   {
     "sensor": "drok-temperature-mk1",
-    "port": 1
+    "slot": 1
   }
 ]

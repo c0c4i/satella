@@ -25,7 +25,7 @@ public class DROKBasicDriver extends SensorDriver {
 
     @Override
     public boolean isCompatible(SensorDescriptor descriptor) {
-        return false;
+        return descriptor.getVendor().equalsIgnoreCase("drok");
     }
 
     @Override

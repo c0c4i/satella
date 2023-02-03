@@ -19,7 +19,6 @@ import java.util.Optional;
  */
 @Component
 public class SensorRepository {
-
     static Logger log = LoggerFactory.getLogger(SensorRepository.class);
 
     /**
@@ -31,7 +30,7 @@ public class SensorRepository {
      * Construct the repository by loading all descriptors
      * in the sensors.json file
      */
-    public SensorRepository(@Value("${satella.filepath.sensors}") String filepath)
+    public SensorRepository(@Value("${filepath.sensors}") String filepath)
     throws IOException
     {
         ObjectMapper mapper = new ObjectMapper();

@@ -3,14 +3,16 @@
     "model": "drok-temperature-mk1",
     "vendor": "DROK",
     "measure_unit": "Temperature",
-    "sample_delay_sec": 5,
+    "min_voltage": 1.0,
+    "max_voltage": 8.0,
+    "min_amperage": 2.0,
+    "max_amperage": 4.0,
     "driver": "drok-driver[0.0.1]"
   },
   {
     "model": "yatuba-aerowind",
     "vendor": "Yatuba",
     "measure_unit": "Windspeed",
-    "sample_delay_sec": 10,
     "driver": "yatuba-wind-driver[0.0.1]"
   }
 ]

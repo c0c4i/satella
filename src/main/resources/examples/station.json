@@ -1,6 +1,4 @@
 {
-  "model": "Satella Weather Station",
-  "version": "0.0.1",
   "slots": [
     {
       "voltage" : 5.0,

@@ -13,6 +13,8 @@ public class SensorDescriptor {
 
     @JsonProperty
     private String model;
+    @JsonProperty
+    private String vendor;
     @JsonProperty("measure_unit")
     private MeasureType measureUnit;
     @JsonProperty("min_value")
@@ -68,5 +70,9 @@ public class SensorDescriptor {
 
     public String getDriver() {
         return driver;
+    }
+
+    public String getVendor() {
+        return vendor;
     }
 }
