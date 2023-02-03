@@ -57,4 +57,8 @@ public class SensorRepository {
                 .filter(x -> x.getModel().equals(model))
                 .findFirst();
     }
+
+    public List<SensorDescriptor> getAll() {
+        return sensorDescriptorList;
+    }
 }

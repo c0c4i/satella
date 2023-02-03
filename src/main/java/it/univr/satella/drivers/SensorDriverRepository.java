@@ -31,11 +31,6 @@ public class SensorDriverRepository {
     @SensorDriverPublish
     private List<ISensorDriver> publishedSensorDrivers;
 
-    /**
-     * All published sensors ready to be instantiated
-     */
-    private List<BeanDefinition> publishedSensorDriverBeans;
-
     @PostConstruct
     public void printSensorDrivers() {
         Logger log = LoggerFactory.getLogger(SensorDriverRepository.class);

@@ -13,8 +13,6 @@ public class SensorDescriptor {
 
     @JsonProperty
     private String model;
-    @JsonProperty
-    private String vendor;
     @JsonProperty("measure_unit")
     private MeasureType measureUnit;
     @JsonProperty("min_value")
@@ -29,8 +27,6 @@ public class SensorDescriptor {
     private float minAmperage;
     @JsonProperty("max_amperage")
     private float maxAmperage;
-    @JsonProperty("sample_delay_sec")
-    private float sampleDelaySec;
     @JsonProperty
     private String driver;
 
@@ -40,10 +36,6 @@ public class SensorDescriptor {
      */
     public String getModel() {
         return model;
-    }
-
-    public String getVendor() {
-        return vendor;
     }
 
     public MeasureType getMeasureUnit() {
@@ -72,10 +64,6 @@ public class SensorDescriptor {
 
     public float getMaxAmperage() {
         return maxAmperage;
-    }
-
-    public float getSampleDelaySec() {
-        return sampleDelaySec;
     }
 
     public String getDriver() {
