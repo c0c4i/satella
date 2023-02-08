@@ -39,8 +39,13 @@ public class SensorRepository {
                 SensorDescriptor[].class
         );
         for (SensorDescriptor value : values) {
-            log.info("Found sensor descriptor: " + value.getModel());
-            sensorDescriptorList.add(value);
+            if (value.isValid()) {
+                log.info("Found valid sensor descriptor: " + value.getModel());
+                sensorDescriptorList.add(value);
+            }
+            else {
+                log.warn("Found invalid sensor descriptor: " + value.getModel());
+            }
         }
     }
 

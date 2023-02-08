@@ -33,6 +33,41 @@ public class SensorDescriptor {
     private String driver;
 
     /**
+     * Constructs a new sensor descriptor
+     */
+    public SensorDescriptor(String model, String vendor, String driver, MeasureType measureUnit,
+                            float minValue, float maxValue, float minVoltage, float maxVoltage,
+                            float minAmperage, float maxAmperage)
+    {
+        this.model = model;
+        this.vendor = vendor;
+        this.driver = driver;
+        this.measureUnit = measureUnit;
+        this.minMeasureValue = minValue;
+        this.maxMeasureValue = maxValue;
+        this.minVoltage = minVoltage;
+        this.maxVoltage = maxVoltage;
+        this.minAmperage = minAmperage;
+        this.maxAmperage = maxAmperage;
+    }
+
+    public SensorDescriptor() {
+        this(null, null, null, null,
+                0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    }
+
+    /**
+     * Checks that the descriptor is coherent
+     */
+    public boolean isValid() {
+        boolean voltageCheck = minVoltage <= maxVoltage;
+        boolean amperageCheck = minAmperage <= maxAmperage;
+        boolean valueCheck = minMeasureValue <= maxMeasureValue;
+        boolean notNull = model != null && vendor != null && driver != null && measureUnit != null;
+        return voltageCheck && amperageCheck && valueCheck && notNull;
+    }
+
+    /**
      * Model of the sensor, this is used as
      * the identifier.
      */

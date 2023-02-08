@@ -8,6 +8,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         SensorDriverRepositoryTest.class,
         SensorRepositoryTest.class,
-        StationManagerTest.class
+        StationManagerTest.class,
+        SensorDescriptorTest.class
 })
 public class SatellaApplicationTests { }
