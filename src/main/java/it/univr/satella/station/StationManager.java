@@ -9,6 +9,7 @@ import it.univr.satella.sensors.MeasureType;
 import it.univr.satella.sensors.SensorBundle;
 import it.univr.satella.sensors.SensorDescriptor;
 import it.univr.satella.sensors.SensorRepository;
+import it.univr.satella.station.exceptions.*;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +31,8 @@ public class StationManager {
     static Logger log = LoggerFactory.getLogger(StationManager.class);
     @Autowired private Environment env;
 
-    @Autowired private SensorDriverRepository sensorDriverRepository;
-    @Autowired private SensorRepository sensorRepository;
+    private final SensorDriverRepository sensorDriverRepository;
+    private final SensorRepository sensorRepository;
 
     /**
      * All currently attached sensors
@@ -43,9 +44,15 @@ public class StationManager {
      * Constructs the station
      * @param filepath Filepath of the station descriptor file
      */
-    public StationManager(@Value("${filepath.station}") String filepath)
+    @Autowired
+    public StationManager(@Value("${filepath.station}") String filepath,
+                          SensorDriverRepository sensorDriverRepository,
+                          SensorRepository sensorRepository)
     throws IOException
     {
+        this.sensorDriverRepository = sensorDriverRepository;
+        this.sensorRepository = sensorRepository;
+
         ObjectMapper mapper = new ObjectMapper();
         descriptor = mapper.readValue(
                 Paths.get(filepath).toFile(),
@@ -71,27 +78,27 @@ public class StationManager {
     {
         // Check that the sensor exists
         Optional<SensorDescriptor> sensorOpt = sensorRepository.getByModel(sensorModel);
-        if (sensorOpt.isEmpty()) throw new Exception("Sensor doesn't exists");
+        if (sensorOpt.isEmpty()) throw new SensorNotFoundException(sensorModel);
         SensorDescriptor sensor = sensorOpt.get();
 
         // Check that the slot exists
         List<SlotDescriptor> slots = descriptor.getSlots();
         if (slots.size() < slot)
-            throw new Exception("Invalid slot");
+            throw new InvalidSlotException(slot);
 
         // Check that the slot is compatible with the sensor
         SlotDescriptor slotDescriptor = slots.get(slot);
         if (!slotDescriptor.isCompatible(sensor))
-            throw new Exception("Sensor is not compatible with slot");
+            throw new SensorNotCompatibleException(sensorModel, slot);
 
-        // Retrieve associated driver
+        // Retrieves associated driver
         Optional<ISensorDriver> driverOpt = sensorDriverRepository.getDriver(sensor.getDriver());
-        if (driverOpt.isEmpty()) throw new Exception("Driver doesn't exists");
+        if (driverOpt.isEmpty()) throw new DriverNotFoundException(sensor.getDriver());
         ISensorDriver driver = driverOpt.get();
 
         // Check that the driver is compatible with the sensor
         if (!driver.isCompatible(sensor))
-            throw new Exception("Driver is not compatible with sensor");
+            throw new DriverNotCompatibleException(sensorModel, sensor.getDriver());
 
         // Removes old attached sensor if present
         if (sensorBundles.containsKey(slot)) {
@@ -150,5 +157,9 @@ public class StationManager {
             valueOpt.ifPresent(result::add);
         }
         return result;
+    }
+
+    public StationDescriptor getDescriptor() {
+        return descriptor;
     }
 }

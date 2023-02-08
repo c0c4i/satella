@@ -27,8 +27,6 @@ public class SensorDriverRepository {
     /**
      * All published sensor drivers
      */
-    @Autowired
-    @SensorDriverPublish
     private List<ISensorDriver> publishedSensorDrivers;
 
     @PostConstruct
@@ -36,6 +34,21 @@ public class SensorDriverRepository {
         Logger log = LoggerFactory.getLogger(SensorDriverRepository.class);
         for (ISensorDriver driver : publishedSensorDrivers)
             log.info("Found driver: " + driver.getId());
+    }
+
+    @Autowired
+    @SensorDriverPublish
+    public SensorDriverRepository(List<ISensorDriver> publishedSensorDrivers) {
+        this.publishedSensorDrivers = publishedSensorDrivers;
+    }
+
+    /**
+     * Insert a new driver into the repository
+     * @param driver new driver to insert
+     */
+    public void save(ISensorDriver driver) {
+        publishedSensorDrivers.removeIf(x -> x.getId().equals(driver.getId()));
+        publishedSensorDrivers.add(driver);
     }
 
     /**

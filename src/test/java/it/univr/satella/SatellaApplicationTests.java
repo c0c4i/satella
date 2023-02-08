@@ -1,13 +1,13 @@
 package it.univr.satella;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class SatellaApplicationTests {
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-	@Test
-	void contextLoads() {
-	}
-
-}
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+        SensorDriverRepositoryTest.class,
+        SensorRepositoryTest.class,
+        StationManagerTest.class
+})
+public class SatellaApplicationTests { }
