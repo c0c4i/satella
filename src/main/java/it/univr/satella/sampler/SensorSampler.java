@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,6 +25,11 @@ public class SensorSampler {
     private int currentTimeSlot;
 
     /**
+     * Block containing the samples
+     */
+    private List<SampleBlock> blocks;
+
+    /**
      * Map for storing the last sample of a specific unit
      */
     private HashMap<SampleUnit, Float> lastSampleValue = new HashMap<>();
@@ -34,6 +40,7 @@ public class SensorSampler {
             @Value("${sampler.block_size}") int blockSize)
     {
         this.stationManager = stationManager;
+        this.blocks = new ArrayList<>();
         this.blockSize = blockSize;
         this.currentTimeSlot = 0;
         this.currentBlock = 0;
@@ -62,6 +69,12 @@ public class SensorSampler {
         }
 
         // TODO: add to block
+        if (currentTimeSlot % blockSize != currentBlock) {
+            blocks.add(new SampleBlock(++currentBlock, blockSize));
+            log.info("Added a new block to sampler with id " + currentBlock);
+        }
+
+        blocks.get(currentBlock).addSamples(samples);
     }
 
     /**
