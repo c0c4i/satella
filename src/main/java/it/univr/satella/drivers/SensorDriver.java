@@ -1,7 +1,6 @@
 package it.univr.satella.drivers;
 
-import ch.qos.logback.core.joran.sanity.Pair;
-import it.univr.satella.sensors.MeasureType;
+import it.univr.satella.sensors.Sample;
 import it.univr.satella.sensors.SensorDescriptor;
 
 import java.util.Optional;
@@ -38,7 +37,7 @@ public abstract class SensorDriver implements ISensorDriver {
     public void shutdown() { }
 
     @Override
-    public Optional<Pair<MeasureType, Float>> measure() {
+    public Optional<Sample> measure() {
         return Optional.empty();
     }
 }

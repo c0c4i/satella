@@ -1,7 +1,6 @@
 package it.univr.satella.drivers;
 
-import ch.qos.logback.core.joran.sanity.Pair;
-import it.univr.satella.sensors.MeasureType;
+import it.univr.satella.sensors.Sample;
 import it.univr.satella.sensors.SensorDescriptor;
 
 import java.util.Optional;
@@ -47,5 +46,5 @@ public interface ISensorDriver {
      * For example if there is a minimum delay between each measurement dictated
      * by the sensor's hardware.
      */
-    Optional<Pair<MeasureType, Float>> measure();
+    Optional<Sample> measure();
 }

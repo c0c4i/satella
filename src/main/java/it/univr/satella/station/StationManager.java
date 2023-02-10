@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.univr.satella.drivers.ISensorDriver;
 import it.univr.satella.drivers.SensorDriverRepository;
-import it.univr.satella.sensors.MeasureType;
-import it.univr.satella.sensors.SensorBundle;
-import it.univr.satella.sensors.SensorDescriptor;
-import it.univr.satella.sensors.SensorRepository;
+import it.univr.satella.sensors.*;
 import it.univr.satella.station.exceptions.*;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -150,10 +147,10 @@ public class StationManager {
      * Samples all attached sensors and generates a list
      * of measurements
      */
-    public List<Pair<MeasureType, Float>> measure() {
-        List<Pair<MeasureType, Float>> result = new ArrayList<>();
+    public List<Sample> measure() {
+        List<Sample> result = new ArrayList<>();
         for (SensorBundle sensor : sensorBundles.values()) {
-            Optional<Pair<MeasureType, Float>> valueOpt = sensor.measure();
+            Optional<Sample> valueOpt = sensor.measure();
             valueOpt.ifPresent(result::add);
         }
         return result;

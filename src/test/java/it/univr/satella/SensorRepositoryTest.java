@@ -1,6 +1,6 @@
 package it.univr.satella;
 
-import it.univr.satella.sensors.MeasureType;
+import it.univr.satella.sensors.SampleUnit;
 import it.univr.satella.sensors.SensorDescriptor;
 import it.univr.satella.sensors.SensorRepository;
 
@@ -42,7 +42,7 @@ public class SensorRepositoryTest {
 
         assertEquals("sensor-1", sensor.getModel());
         assertEquals("vendor-1", sensor.getVendor());
-        assertEquals(MeasureType.Temperature, sensor.getMeasureUnit());
+        assertEquals(SampleUnit.Temperature, sensor.getMeasureUnit());
         assertEquals("driver[0.0.1]", sensor.getDriver());
         assertEquals(1.0, sensor.getMinVoltage(), 0.0);
         assertEquals(8.0, sensor.getMaxVoltage(), 0.0);

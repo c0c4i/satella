@@ -2,7 +2,6 @@ package it.univr.satella.sensors;
 
 import ch.qos.logback.core.joran.sanity.Pair;
 import it.univr.satella.drivers.ISensorDriver;
-import it.univr.satella.drivers.SensorDriver;
 
 import java.util.Optional;
 
@@ -32,7 +31,7 @@ public class SensorBundle {
         this.enabled = value;
     }
 
-    public Optional<Pair<MeasureType, Float>> measure() {
+    public Optional<Sample> measure() {
         if (enabled) return driver.measure();
         return Optional.empty();
     }

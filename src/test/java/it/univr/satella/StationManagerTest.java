@@ -1,10 +1,7 @@
 package it.univr.satella;
 
-import ch.qos.logback.core.joran.sanity.Pair;
-import it.univr.satella.drivers.ISensorDriver;
 import it.univr.satella.drivers.SensorDriver;
 import it.univr.satella.drivers.SensorDriverRepository;
-import it.univr.satella.sensors.MeasureType;
 import it.univr.satella.sensors.SensorDescriptor;
 import it.univr.satella.sensors.SensorRepository;
 import it.univr.satella.station.SlotDescriptor;
@@ -15,9 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
