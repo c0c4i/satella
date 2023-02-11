@@ -19,10 +19,9 @@ public class SensorSampler {
     private static Logger log = LoggerFactory.getLogger(SensorSampler.class);
 
     private StationManager stationManager;
-    private final int blockSize;
-
-    private int currentBlock;
     private int currentTimeSlot;
+    private final int blockSize;
+    private int currentBlock;
 
     /**
      * Block containing the samples
@@ -41,11 +40,11 @@ public class SensorSampler {
     {
         this.stationManager = stationManager;
         this.blocks = new ArrayList<>();
+        this.blocks.add(new SampleBlock(currentBlock, blockSize));
         this.blockSize = blockSize;
         this.currentTimeSlot = 0;
         this.currentBlock = 0;
     }
-
 
     /**
      * Sample sensors every 1s
@@ -68,13 +67,13 @@ public class SensorSampler {
             lastSampleValue.put(sample.unit, sample.value);
         }
 
-        // TODO: add to block
-        if (currentTimeSlot % blockSize != currentBlock) {
+        if (currentTimeSlot / blockSize != currentBlock) {
             blocks.add(new SampleBlock(++currentBlock, blockSize));
             log.info("Added a new block to sampler with id " + currentBlock);
         }
 
         blocks.get(currentBlock).addSamples(samples);
+        currentTimeSlot += 1;
     }
 
     /**
@@ -86,4 +85,11 @@ public class SensorSampler {
         return 0.0f;
     }
 
+    public int getBlocksCount() {
+        return blocks.size();
+    }
+
+    public SampleBlock getCurrentBlock() {
+        return blocks.get(currentBlock);
+    }
 }

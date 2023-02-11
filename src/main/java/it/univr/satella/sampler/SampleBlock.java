@@ -37,13 +37,11 @@ public class SampleBlock {
     }
 
     public int getCapacity() {
-        return samplesList.size();
+        return blockSize;
     }
-
     public int getSize() {
         return writeIndex;
     }
-
     public int getId() {
         return id;
     }
