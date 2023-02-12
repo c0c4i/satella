@@ -2,6 +2,8 @@ package it.univr.satella.station;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.univr.satella.alarm.Alarm;
+import it.univr.satella.alarm.AlarmRepository;
 import it.univr.satella.drivers.ISensorDriver;
 import it.univr.satella.drivers.SensorDriverRepository;
 import it.univr.satella.sensors.*;
@@ -31,6 +33,7 @@ public class StationManager {
     private final SensorDriverRepository sensorDriverRepository;
     private final SensorRepository sensorRepository;
     private final SampleRepository sampleRepository;
+    private final AlarmRepository alarmRepository;
 
     /**
      * All currently attached sensors
@@ -50,12 +53,14 @@ public class StationManager {
     public StationManager(@Value("${filepath.station}") String filepath,
                           SensorDriverRepository sensorDriverRepository,
                           SensorRepository sensorRepository,
-                          SampleRepository sampleRepository)
+                          SampleRepository sampleRepository,
+                          AlarmRepository alarmRepository)
     throws IOException
     {
         this.sensorDriverRepository = sensorDriverRepository;
         this.sensorRepository = sensorRepository;
         this.sampleRepository = sampleRepository;
+        this.alarmRepository = alarmRepository;
 
         this.lastSensorBundleId = 0;
         this.currentTimestamp = 0;
@@ -161,13 +166,21 @@ public class StationManager {
     @Scheduled(fixedDelay = 1000)
     public void measure() {
         for (SensorBundle sensor : sensorBundles.values()) {
-            SampleUnit unit = sensor.getDescriptor().getMeasureUnit();
+            SensorDescriptor descriptor = sensor.getDescriptor();
 
             Optional<Float> valueOpt = sensor.measure();
             if (valueOpt.isPresent()) {
-                sensor.setLastValue(valueOpt.get());
+                float value = valueOpt.get();
+
+                sensor.setLastValue(value);
                 sampleRepository.save(
-                        new Sample(sensor.getId(), LocalDateTime.now(), unit, valueOpt.get()));
+                        new Sample(sensor.getId(), LocalDateTime.now(), descriptor.getMeasureUnit(), value));
+
+                // Create alarm if necessary
+                if (descriptor.isAlarmValue(value)) {
+                    alarmRepository.save(new Alarm(descriptor.getModel(), sensor.getSlot(), value, LocalDateTime.now()));
+                    log.warn("Value of sensor " + descriptor.getModel() + " is outside safe range: " + value);
+                }
             }
         }
         currentTimestamp += 1;
