@@ -11,7 +11,7 @@ public class Sample {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
 
     public int sensorId;
 

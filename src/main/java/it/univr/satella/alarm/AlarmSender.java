@@ -31,12 +31,13 @@ public class AlarmSender {
     @Scheduled(fixedDelay = 1000 * 60 * 5)
     public void sendAlarms() {
         List<Alarm> alarms = alarmRepository.findAll();
-        if (satellite.send(alarms, "http://www.meteotrento.it/")) {
-            log.info("Successfully sent alarms to control center");
-            alarmRepository.deleteAll();
-        }
-        else {
-            log.info("Unable to send alarms to control center");
+        if (!alarms.isEmpty()) {
+            if (satellite.send(alarms, "http://www.meteotrento.it/")) {
+                log.info("Successfully sent alarms to control center");
+                alarmRepository.deleteAll();
+            } else {
+                log.info("Unable to send alarms to control center");
+            }
         }
     }
 }

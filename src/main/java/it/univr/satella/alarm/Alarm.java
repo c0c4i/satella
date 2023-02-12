@@ -13,19 +13,23 @@ public class Alarm {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    public int id;
+    public long id;
 
     @Temporal(TemporalType.TIMESTAMP)
     public LocalDateTime time;
 
     public String sensorModel;
     public int sensorSlot;
-    public float value;
+    public float alarmValue;
 
     public Alarm(String sensorModel, int sensorSlot, float value, LocalDateTime time) {
         this.sensorModel = sensorModel;
         this.sensorSlot = sensorSlot;
-        this.value = value;
+        this.alarmValue = value;
         this.time = time;
+    }
+
+    public Alarm() {
+        this(null, 0, 0.0f, null);
     }
 }

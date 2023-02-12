@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
@@ -29,6 +30,7 @@ import static org.junit.Assert.assertEquals;
  * Test the functionality and integration of the StationManager
  */
 @RunWith(SpringRunner.class)
+@SpringBootTest(classes = { SensorRepository.class, AlarmRepository.class })
 @EnableAutoConfiguration
 public class StationManagerTest {
 

@@ -1,10 +1,7 @@
 package it.univr.satella;
 
-import it.univr.satella.sensors.SampleUnit;
-import it.univr.satella.sensors.SensorDescriptor;
-import it.univr.satella.sensors.SensorLoader;
+import it.univr.satella.sensors.*;
 
-import it.univr.satella.sensors.SensorRepository;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,6 +21,7 @@ import static org.junit.Assert.*;
  * Test the integration between the sensor loader and the sensor repository
  */
 @RunWith(SpringRunner.class)
+@SpringBootTest(classes = { SensorRepository.class })
 @EnableAutoConfiguration
 public class SensorLoaderTest {
 
