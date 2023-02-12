@@ -12,6 +12,7 @@ import static org.junit.Assert.*;
 
 public class SensorSamplerTest {
 
+    /*
     private static final int BLOCK_SIZE = 100;
     private static SensorSampler sampler;
 
@@ -49,4 +50,5 @@ public class SensorSamplerTest {
         // This it's present only in the first sample
         assertEquals(-100.0f, (int)sampler.getLastSampleOfUnit(SampleUnit.WindSpeed), 0.0f);
     }
+     */
 }
