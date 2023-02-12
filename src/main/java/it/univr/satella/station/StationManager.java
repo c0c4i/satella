@@ -1,6 +1,5 @@
 package it.univr.satella.station;
 
-import ch.qos.logback.core.joran.sanity.Pair;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.univr.satella.drivers.ISensorDriver;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -86,9 +84,8 @@ public class StationManager {
     throws Exception
     {
         // Check that the sensor exists
-        Optional<SensorDescriptor> sensorOpt = sensorRepository.getByModel(sensorModel);
-        if (sensorOpt.isEmpty()) throw new SensorNotFoundException(sensorModel);
-        SensorDescriptor sensor = sensorOpt.get();
+        SensorDescriptor sensor = sensorRepository.findByModel(sensorModel);
+        if (sensor == null) throw new SensorNotFoundException(sensorModel);
 
         // Check that the slot exists
         List<SlotDescriptor> slots = descriptor.getSlots();

@@ -2,33 +2,44 @@ package it.univr.satella;
 
 import it.univr.satella.drivers.SensorDriver;
 import it.univr.satella.drivers.SensorDriverRepository;
-import it.univr.satella.sensors.SampleRepository;
 import it.univr.satella.sensors.SensorDescriptor;
+import it.univr.satella.sensors.SensorLoader;
 import it.univr.satella.sensors.SensorRepository;
 import it.univr.satella.station.SlotDescriptor;
 import it.univr.satella.station.StationDescriptor;
 import it.univr.satella.station.StationManager;
 import it.univr.satella.station.exceptions.*;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test the functionality and integration of the StationManager
+ */
+@RunWith(SpringRunner.class)
+@DataJpaTest
 public class StationManagerTest {
 
-    private final static String SENSORS_CONFIG_FILE = "src/test/resources/station_sensors.json";
     private final static String STATION_CONFIG_FILE = "src/test/resources/station.json";
 
-    private static StationManager station;
+    @Autowired private SensorRepository sensorRepository;
+    private StationManager station;
 
-    @BeforeClass
-    public static void initialize() throws IOException  {
+    @Before
+    public void initialize() throws IOException  {
 
-        // Load simple sensor list
-        SensorRepository sensorRepository = new SensorRepository(SENSORS_CONFIG_FILE);
+        // Load all sensors
+        SensorLoader sensorLoader = new SensorLoader(sensorRepository);
+        sensorLoader.loadSensorsAt("src/test/resources/station_sensors.json");
 
         // Create fake driver for this test
         SensorDriverRepository sensorDriverRepository = new SensorDriverRepository(List.of(
@@ -88,5 +99,4 @@ public class StationManagerTest {
     public void testDriverNotCompatible() throws Exception {
         station.loadConfigurationAt("src/test/resources/configurations/driver_not_compatible.json");
     }
-
 }

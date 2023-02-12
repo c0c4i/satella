@@ -4,15 +4,20 @@ package it.univr.satella.sensors;
 //import jakarta.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 /**
  * Describes the capability of a sensor, that is its limits,
  * unit of measure and the necessary driver.
  */
+@Entity
 public class SensorDescriptor {
 
+    @Id
     @JsonProperty
     private String model;
+
     @JsonProperty
     private String vendor;
     @JsonProperty("measure_unit")
