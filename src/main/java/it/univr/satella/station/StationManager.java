@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -169,7 +170,7 @@ public class StationManager {
             if (valueOpt.isPresent()) {
                 sensor.setLastValue(valueOpt.get());
                 sampleRepository.save(
-                        new Sample(sensor.getId(), currentTimestamp, unit, valueOpt.get()));
+                        new Sample(sensor.getId(), LocalDateTime.now(), unit, valueOpt.get()));
             }
         }
         currentTimestamp += 1;

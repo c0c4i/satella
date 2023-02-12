@@ -2,6 +2,9 @@ package it.univr.satella.sensors;
 
 
 import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
+
+import java.time.LocalDateTime;
 
 @Entity
 public class Sample {
@@ -13,14 +16,14 @@ public class Sample {
     public int sensorId;
 
     @Temporal(TemporalType.TIMESTAMP)
-    public int timestamp;
+    public LocalDateTime time;
 
     public SampleUnit unit;
     public float measure;
 
-    public Sample(int sensorId, int timestamp, SampleUnit unit, float measure) {
+    public Sample(int sensorId, LocalDateTime time, SampleUnit unit, float measure) {
         this.sensorId = sensorId;
-        this.timestamp = timestamp;
+        this.time = time;
         this.unit = unit;
         this.measure = measure;
     }
