@@ -1,7 +1,5 @@
 package it.univr.satella;
 
-import it.univr.satella.sampler.SampleBlock;
-import it.univr.satella.sampler.SensorSampler;
 import it.univr.satella.sensors.Sample;
 import it.univr.satella.sensors.SampleUnit;
 import org.junit.BeforeClass;
@@ -9,7 +7,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -51,24 +48,5 @@ public class SensorSamplerTest {
 
         // This it's present only in the first sample
         assertEquals(-100.0f, (int)sampler.getLastSampleOfUnit(SampleUnit.WindSpeed), 0.0f);
-    }
-
-    @Test
-    public void testGetBlocks() {
-
-        assertEquals(2, sampler.getBlocksCount());
-        SampleBlock block = sampler.getCurrentBlock();
-
-        assertEquals(1, block.getId());
-        assertEquals(BLOCK_SIZE, block.getCapacity());
-        assertEquals(2, block.getSize());
-
-        Optional<List<Sample>> lastSamplesOpt = block.getLastSamples();
-        assertTrue(lastSamplesOpt.isPresent());
-        List<Sample> lastSamples = lastSamplesOpt.get();
-
-        assertTrue(lastSamples.stream().anyMatch(x -> x.unit == SampleUnit.Temperature && x.value == (float)(BLOCK_SIZE + 0)));
-        assertTrue(lastSamples.stream().anyMatch(x -> x.unit == SampleUnit.Humidity    && x.value == (float)(BLOCK_SIZE + 1)));
-        assertFalse(lastSamples.stream().anyMatch(x -> x.unit == SampleUnit.WindSpeed));
     }
 }

@@ -40,7 +40,7 @@ public class DROKBasicDriver extends SensorDriver {
     }
 
     @Override
-    public Optional<Sample> measure() {
+    public Optional<Float> measure() {
         return Optional.empty();
     }
 }

@@ -2,6 +2,7 @@ package it.univr.satella;
 
 import it.univr.satella.drivers.SensorDriver;
 import it.univr.satella.drivers.SensorDriverRepository;
+import it.univr.satella.sensors.SampleRepository;
 import it.univr.satella.sensors.SensorDescriptor;
 import it.univr.satella.sensors.SensorRepository;
 import it.univr.satella.station.SlotDescriptor;
@@ -44,9 +45,9 @@ public class StationManagerTest {
                     }
                 }
         ));
-
         sensorDriverRepository.printSensorDrivers();
-        station = new StationManager(STATION_CONFIG_FILE, sensorDriverRepository, sensorRepository);
+        station = new StationManager(STATION_CONFIG_FILE,
+                sensorDriverRepository, sensorRepository, null);
     }
 
     @Test

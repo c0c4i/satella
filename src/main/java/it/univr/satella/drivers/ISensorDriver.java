@@ -46,5 +46,5 @@ public interface ISensorDriver {
      * For example if there is a minimum delay between each measurement dictated
      * by the sensor's hardware.
      */
-    Optional<Sample> measure();
+    Optional<Float> measure();
 }

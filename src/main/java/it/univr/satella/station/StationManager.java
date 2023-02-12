@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -30,12 +31,17 @@ public class StationManager {
 
     private final SensorDriverRepository sensorDriverRepository;
     private final SensorRepository sensorRepository;
+    private final SampleRepository sampleRepository;
 
     /**
      * All currently attached sensors
      */
     private HashMap<Integer, SensorBundle> sensorBundles = new HashMap<>();
+    private int lastSensorBundleId;
+
     private final StationDescriptor descriptor;
+
+    private int currentTimestamp;
 
     /**
      * Constructs the station
@@ -44,11 +50,16 @@ public class StationManager {
     @Autowired
     public StationManager(@Value("${filepath.station}") String filepath,
                           SensorDriverRepository sensorDriverRepository,
-                          SensorRepository sensorRepository)
+                          SensorRepository sensorRepository,
+                          SampleRepository sampleRepository)
     throws IOException
     {
         this.sensorDriverRepository = sensorDriverRepository;
         this.sensorRepository = sensorRepository;
+        this.sampleRepository = sampleRepository;
+
+        this.lastSensorBundleId = 0;
+        this.currentTimestamp = 0;
 
         ObjectMapper mapper = new ObjectMapper();
         descriptor = mapper.readValue(
@@ -103,7 +114,9 @@ public class StationManager {
             bundle.shutdown();
         }
 
-        SensorBundle bundle = new SensorBundle(sensor, driver, slot);
+        SensorBundle bundle = new SensorBundle(lastSensorBundleId, sensor, driver, slot);
+        lastSensorBundleId += 1;
+
         sensorBundles.put(slot, bundle);
         bundle.initialize();
     }
@@ -147,13 +160,19 @@ public class StationManager {
      * Samples all attached sensors and generates a list
      * of measurements
      */
-    public List<Sample> measure() {
-        List<Sample> result = new ArrayList<>();
+    @Scheduled(fixedDelay = 1000)
+    public void measure() {
         for (SensorBundle sensor : sensorBundles.values()) {
-            Optional<Sample> valueOpt = sensor.measure();
-            valueOpt.ifPresent(result::add);
+            SampleUnit unit = sensor.getDescriptor().getMeasureUnit();
+
+            Optional<Float> valueOpt = sensor.measure();
+            if (valueOpt.isPresent()) {
+                sensor.setLastValue(valueOpt.get());
+                sampleRepository.save(
+                        new Sample(sensor.getId(), currentTimestamp, unit, valueOpt.get()));
+            }
         }
-        return result;
+        currentTimestamp += 1;
     }
 
     public StationDescriptor getDescriptor() {

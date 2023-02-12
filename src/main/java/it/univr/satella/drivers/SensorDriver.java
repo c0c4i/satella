@@ -37,7 +37,7 @@ public abstract class SensorDriver implements ISensorDriver {
     public void shutdown() { }
 
     @Override
-    public Optional<Sample> measure() {
+    public Optional<Float> measure() {
         return Optional.empty();
     }
 }
