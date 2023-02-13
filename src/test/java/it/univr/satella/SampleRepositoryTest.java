@@ -1,16 +1,13 @@
 package it.univr.satella;
 
-import it.univr.satella.alarm.AlarmRepository;
 import it.univr.satella.sensors.Sample;
 import it.univr.satella.sensors.SampleRepository;
 import it.univr.satella.sensors.SampleUnit;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -45,7 +42,7 @@ public class SampleRepositoryTest {
                 SampleUnit.Temperature, 3.0f)
         );
         repository.save(new Sample(2,
-                LocalDateTime.of(2015, Month.JUNE, 29, 19, 30, 41),
+                LocalDateTime.of(2015, Month.JUNE, 29, 19, 30, 42),
                 SampleUnit.Temperature, 3.0f)
         );
     }
@@ -67,6 +64,20 @@ public class SampleRepositoryTest {
             if (sample.sensorId != 1)
                 fail();
         }
+    }
+
+    @Test
+    public void testFindAllByTimeBetweenOrderByTime() {
+        List<Sample> result = repository.findAllByTimeBetweenOrderByTime(
+                LocalDateTime.of(2015, Month.JUNE, 29, 19, 30, 10),
+                LocalDateTime.of(20115, Month.JUNE, 29, 19, 30, 50));
+
+        assertEquals(4, result.size());
+
+        // Check the order of the results
+        assertTrue(result.get(0).time.isBefore(result.get(1).time));
+        assertTrue(result.get(1).time.isBefore(result.get(2).time));
+        assertTrue(result.get(2).time.isBefore(result.get(3).time));
     }
 
 }

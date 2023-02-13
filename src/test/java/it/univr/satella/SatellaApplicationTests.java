@@ -12,6 +12,7 @@ import org.junit.runners.Suite;
         StationManagerTest.class,
         SensorDescriptorTest.class,
         AlarmTest.class,
-        NotificationTest.class
+        NotificationTest.class,
+        SampleSenderTest.class,
 })
 public class SatellaApplicationTests { }

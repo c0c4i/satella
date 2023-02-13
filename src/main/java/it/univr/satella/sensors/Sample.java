@@ -27,4 +27,8 @@ public class Sample {
         this.unit = unit;
         this.measure = measure;
     }
+
+    public Sample() {
+        this(0, LocalDateTime.now(), SampleUnit.WindSpeed, -999.0f);
+    }
 }

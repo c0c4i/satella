@@ -3,7 +3,7 @@ package it.univr.satella.station;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.univr.satella.alarm.Alarm;
-import it.univr.satella.alarm.AlarmRepository;
+import it.univr.satella.alarm.AlarmService;
 import it.univr.satella.drivers.ISensorDriver;
 import it.univr.satella.drivers.SensorDriverRepository;
 import it.univr.satella.notification.NotificationService;
@@ -37,7 +37,7 @@ public class StationManager {
     private final SensorDriverRepository sensorDriverRepository;
     private final SensorRepository sensorRepository;
     private final SampleRepository sampleRepository;
-    private final AlarmRepository alarmRepository;
+    private final AlarmService alarmService;
 
     /**
      * All currently attached sensors
@@ -58,13 +58,13 @@ public class StationManager {
                           SensorDriverRepository sensorDriverRepository,
                           SensorRepository sensorRepository,
                           SampleRepository sampleRepository,
-                          AlarmRepository alarmRepository)
+                          AlarmService alarmService)
     throws IOException
     {
         this.sensorDriverRepository = sensorDriverRepository;
         this.sensorRepository = sensorRepository;
         this.sampleRepository = sampleRepository;
-        this.alarmRepository = alarmRepository;
+        this.alarmService = alarmService;
 
         this.lastSensorBundleId = 0;
         this.currentTimestamp = 0;
@@ -182,11 +182,8 @@ public class StationManager {
                         new Sample(sensor.getId(), LocalDateTime.now(), descriptor.getMeasureUnit(), value));
 
                 // Create alarm if necessary
-                if (descriptor.isAlarmValue(value)) {
-                    alarmRepository.save(new Alarm(descriptor.getModel(), sensor.getSlot(), value, LocalDateTime.now()));
-                    if (notificationService != null)
-                        notificationService.warning("Value of sensor " + descriptor.getModel() + " is outside safe range: " + value);
-                }
+                if (descriptor.isAlarmValue(value))
+                    alarmService.sendAlarm(new Alarm(descriptor.getModel(), sensor.getSlot(), value, LocalDateTime.now()));
             }
         }
         currentTimestamp += 1;
