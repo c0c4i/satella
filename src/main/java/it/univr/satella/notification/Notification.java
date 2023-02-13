@@ -22,4 +22,8 @@ public class Notification {
         this.type = type;
         this.message = message;
     }
+
+    public Notification() {
+        this(NotificationType.Error, "none");
+    }
 }

@@ -26,11 +26,13 @@ import static org.junit.Assert.*;
 @EnableAutoConfiguration
 public class AlarmTest {
 
-    @Autowired private AlarmRepository alarmRepository;
+    @Autowired
+    private AlarmRepository alarmRepository;
 
     @Test
     public void testComSuccess() {
 
+        alarmRepository.deleteAll();
         alarmRepository.save(new Alarm("sensor-1", 0, 15.0f, LocalDateTime.now()));
         AlarmSender sender = new AlarmSender(alarmRepository, (obj, url) -> true);
         sender.sendAlarms();
@@ -45,6 +47,7 @@ public class AlarmTest {
     @Test
     public void testComFailure() {
 
+        alarmRepository.deleteAll();
         alarmRepository.save(new Alarm("sensor-1", 0, 15.0f, LocalDateTime.now()));
         AlarmSender sender = new AlarmSender(alarmRepository, (obj, url) -> false);
         sender.sendAlarms();

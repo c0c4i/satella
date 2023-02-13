@@ -11,6 +11,7 @@ import org.junit.runners.Suite;
         SensorRepositoryTest.class,
         StationManagerTest.class,
         SensorDescriptorTest.class,
-        AlarmTest.class
+        AlarmTest.class,
+        NotificationTest.class
 })
 public class SatellaApplicationTests { }

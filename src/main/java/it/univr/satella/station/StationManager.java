@@ -6,6 +6,7 @@ import it.univr.satella.alarm.Alarm;
 import it.univr.satella.alarm.AlarmRepository;
 import it.univr.satella.drivers.ISensorDriver;
 import it.univr.satella.drivers.SensorDriverRepository;
+import it.univr.satella.notification.NotificationService;
 import it.univr.satella.sensors.*;
 import it.univr.satella.station.exceptions.*;
 import jakarta.annotation.PostConstruct;
@@ -29,6 +30,9 @@ public class StationManager {
 
     static Logger log = LoggerFactory.getLogger(StationManager.class);
     @Autowired private Environment env;
+
+    @Autowired
+    private NotificationService notificationService;
 
     private final SensorDriverRepository sensorDriverRepository;
     private final SensorRepository sensorRepository;
@@ -155,7 +159,8 @@ public class StationManager {
 
         for (SlotConfig con : cons) {
             attach(con.slot, con.sensorModel);
-            log.info("Successfully attached sensor " + con.sensorModel + " at " + con.slot);
+            if (notificationService != null)
+                notificationService.info("Successfully attached sensor " + con.sensorModel + " at " + con.slot);
         }
     }
 
@@ -179,7 +184,8 @@ public class StationManager {
                 // Create alarm if necessary
                 if (descriptor.isAlarmValue(value)) {
                     alarmRepository.save(new Alarm(descriptor.getModel(), sensor.getSlot(), value, LocalDateTime.now()));
-                    log.warn("Value of sensor " + descriptor.getModel() + " is outside safe range: " + value);
+                    if (notificationService != null)
+                        notificationService.warning("Value of sensor " + descriptor.getModel() + " is outside safe range: " + value);
                 }
             }
         }

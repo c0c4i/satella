@@ -1,6 +1,7 @@
 package it.univr.satella.sensors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.univr.satella.notification.NotificationService;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +24,13 @@ import java.util.Optional;
 @Component
 public class SensorLoader {
 
-    static Logger log = LoggerFactory.getLogger(SensorLoader.class);
     private final SensorRepository sensorRepository;
 
     @Autowired
     private Environment env;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @Autowired
     public SensorLoader(SensorRepository sensorRepository) {
@@ -56,17 +59,20 @@ public class SensorLoader {
                 addSensorToRepo(sensor);
 
         } catch (IOException e) {
-            log.warn("Unable to load sensors in the sensors.json file");
+            if (notificationService != null)
+                notificationService.warning("Unable to load sensors in the sensors.json file");
         }
     }
 
     public void addSensorToRepo(SensorDescriptor sensor) {
         if (sensor.isValid()) {
-            log.info("Found valid sensor descriptor: " + sensor.getModel());
+            if (notificationService != null)
+                notificationService.info("Found valid sensor descriptor: " + sensor.getModel());
             sensorRepository.save(sensor);
         }
         else {
-            log.warn("Found invalid sensor descriptor: " + sensor.getModel());
+            if (notificationService != null)
+                notificationService.warning("Found invalid sensor descriptor: " + sensor.getModel());
         }
     }
 }
