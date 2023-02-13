@@ -1,15 +1,13 @@
 package it.univr.satella;
 
-import it.univr.satella.sensors.SampleUnit;
-import it.univr.satella.sensors.SensorDescriptor;
-import it.univr.satella.sensors.SensorLoader;
+import it.univr.satella.sensors.*;
 
-import it.univr.satella.sensors.SensorRepository;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,7 +21,8 @@ import static org.junit.Assert.*;
  * Test the integration between the sensor loader and the sensor repository
  */
 @RunWith(SpringRunner.class)
-@DataJpaTest
+@SpringBootTest(classes = { SensorRepository.class })
+@EnableAutoConfiguration
 public class SensorLoaderTest {
 
     // Instance of the JPA repository

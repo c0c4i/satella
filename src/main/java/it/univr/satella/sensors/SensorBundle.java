@@ -56,4 +56,8 @@ public class SensorBundle {
     public float getLastValue() {
         return lastValue;
     }
+
+    public int getSlot() {
+        return slot;
+    }
 }

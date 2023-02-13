@@ -1,5 +1,6 @@
 package it.univr.satella;
 
+import it.univr.satella.alarm.AlarmRepository;
 import it.univr.satella.sensors.Sample;
 import it.univr.satella.sensors.SampleRepository;
 import it.univr.satella.sensors.SampleUnit;
@@ -8,7 +9,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
@@ -18,7 +21,8 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
+@SpringBootTest(classes = { SampleRepository.class })
+@EnableAutoConfiguration
 public class SampleRepositoryTest {
 
     @Autowired
