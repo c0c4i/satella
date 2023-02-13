@@ -14,6 +14,7 @@ import org.springframework.util.ClassUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -27,7 +28,7 @@ public class SensorDriverRepository {
     /**
      * All published sensor drivers
      */
-    private List<ISensorDriver> publishedSensorDrivers;
+    private List<ISensorDriver> publishedSensorDrivers = new ArrayList<>();
 
     @PostConstruct
     public void printSensorDrivers() {
@@ -39,7 +40,16 @@ public class SensorDriverRepository {
     @Autowired
     @SensorDriverPublish
     public SensorDriverRepository(List<ISensorDriver> publishedSensorDrivers) {
-        this.publishedSensorDrivers = publishedSensorDrivers;
+        saveAll(publishedSensorDrivers);
+    }
+
+    /**
+     * Insert multiple drivers in the repository
+     * @param drivers new drivers to insert
+     */
+    public void saveAll(List<ISensorDriver> drivers) {
+        for (ISensorDriver driver : drivers)
+            save(driver);
     }
 
     /**

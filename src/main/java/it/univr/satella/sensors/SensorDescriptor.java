@@ -73,13 +73,6 @@ public class SensorDescriptor {
     }
 
     /**
-     * Returns true if the value is outside the safe range
-     */
-    public boolean isAlarmValue(float value) {
-        return value < minMeasureValue || value > maxMeasureValue;
-    }
-
-    /**
      * Model of the sensor, this is used as
      * the identifier.
      */

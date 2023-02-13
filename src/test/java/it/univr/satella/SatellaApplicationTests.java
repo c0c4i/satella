@@ -11,7 +11,6 @@ import org.junit.runners.Suite;
         SensorRepositoryTest.class,
         StationManagerTest.class,
         SensorDescriptorTest.class,
-        AlarmTest.class,
         NotificationTest.class,
         SampleSenderTest.class,
 })

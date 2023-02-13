@@ -2,8 +2,6 @@ package it.univr.satella.station;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.univr.satella.alarm.Alarm;
-import it.univr.satella.alarm.AlarmService;
 import it.univr.satella.drivers.ISensorDriver;
 import it.univr.satella.drivers.SensorDriverRepository;
 import it.univr.satella.notification.NotificationService;
@@ -32,13 +30,10 @@ public class StationManager {
     static Logger log = LoggerFactory.getLogger(StationManager.class);
     @Autowired private Environment env;
 
-    @Autowired
-    private NotificationService notificationService;
-
+    private final NotificationService notificationService;
     private final SensorDriverRepository sensorDriverRepository;
     private final SensorRepository sensorRepository;
     private final SampleRepository sampleRepository;
-    private final AlarmService alarmService;
 
     /**
      * All currently attached sensors
@@ -59,15 +54,15 @@ public class StationManager {
      */
     @Autowired
     public StationManager(@Value("${filepath.station}") String filepath,
+                          NotificationService notificationService,
                           SensorDriverRepository sensorDriverRepository,
                           SensorRepository sensorRepository,
-                          SampleRepository sampleRepository,
-                          AlarmService alarmService)
+                          SampleRepository sampleRepository)
     {
+        this.notificationService = notificationService;
         this.sensorDriverRepository = sensorDriverRepository;
         this.sensorRepository = sensorRepository;
         this.sampleRepository = sampleRepository;
-        this.alarmService = alarmService;
 
         this.lastSensorBundleId = 0;
         this.currentTimestamp = 0;
@@ -134,6 +129,8 @@ public class StationManager {
 
         sensorBundles.put(slot, bundle);
         bundle.initialize();
+
+        notificationService.info("Successfully attached sensor " + sensorModel + " at " + slot);
     }
 
     private static class SlotConfig {
@@ -165,11 +162,8 @@ public class StationManager {
                 SlotConfig[].class
         );
 
-        for (SlotConfig con : cons) {
+        for (SlotConfig con : cons)
             attach(con.slot, con.sensorModel);
-            if (notificationService != null)
-                notificationService.info("Successfully attached sensor " + con.sensorModel + " at " + con.slot);
-        }
     }
 
     /**
@@ -188,10 +182,6 @@ public class StationManager {
                 sensor.setLastValue(value);
                 sampleRepository.save(
                         new Sample(sensor.getId(), LocalDateTime.now(), descriptor.getMeasureUnit(), value));
-
-                // Create alarm if necessary
-                if (descriptor.isAlarmValue(value))
-                    alarmService.sendAlarm(new Alarm(descriptor.getModel(), sensor.getSlot(), value, LocalDateTime.now()));
             }
         }
         currentTimestamp += 1;
