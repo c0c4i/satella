@@ -4,19 +4,24 @@ package it.univr.satella.sensors;
 //import jakarta.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 /**
  * Describes the capability of a sensor, that is its limits,
  * unit of measure and the necessary driver.
  */
+@Entity
 public class SensorDescriptor {
 
+    @Id
     @JsonProperty
     private String model;
+
     @JsonProperty
     private String vendor;
     @JsonProperty("measure_unit")
-    private MeasureType measureUnit;
+    private SampleUnit sampleUnit;
     @JsonProperty("min_value")
     private float minMeasureValue;
     @JsonProperty("max_value")
@@ -35,14 +40,14 @@ public class SensorDescriptor {
     /**
      * Constructs a new sensor descriptor
      */
-    public SensorDescriptor(String model, String vendor, String driver, MeasureType measureUnit,
+    public SensorDescriptor(String model, String vendor, String driver, SampleUnit sampleUnit,
                             float minValue, float maxValue, float minVoltage, float maxVoltage,
                             float minAmperage, float maxAmperage)
     {
         this.model = model;
         this.vendor = vendor;
         this.driver = driver;
-        this.measureUnit = measureUnit;
+        this.sampleUnit = sampleUnit;
         this.minMeasureValue = minValue;
         this.maxMeasureValue = maxValue;
         this.minVoltage = minVoltage;
@@ -63,8 +68,15 @@ public class SensorDescriptor {
         boolean voltageCheck = minVoltage <= maxVoltage;
         boolean amperageCheck = minAmperage <= maxAmperage;
         boolean valueCheck = minMeasureValue <= maxMeasureValue;
-        boolean notNull = model != null && vendor != null && driver != null && measureUnit != null;
+        boolean notNull = model != null && vendor != null && driver != null && sampleUnit != null;
         return voltageCheck && amperageCheck && valueCheck && notNull;
+    }
+
+    /**
+     * Returns true if the value is outside the safe range
+     */
+    public boolean isAlarmValue(float value) {
+        return value < minMeasureValue || value > maxMeasureValue;
     }
 
     /**
@@ -75,8 +87,8 @@ public class SensorDescriptor {
         return model;
     }
 
-    public MeasureType getMeasureUnit() {
-        return measureUnit;
+    public SampleUnit getMeasureUnit() {
+        return sampleUnit;
     }
 
     public float getMinMeasureValue() {

@@ -1,14 +1,13 @@
 package it.univr.satella.station;
 
-import ch.qos.logback.core.joran.sanity.Pair;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.univr.satella.alarm.Alarm;
+import it.univr.satella.alarm.AlarmService;
 import it.univr.satella.drivers.ISensorDriver;
 import it.univr.satella.drivers.SensorDriverRepository;
-import it.univr.satella.sensors.MeasureType;
-import it.univr.satella.sensors.SensorBundle;
-import it.univr.satella.sensors.SensorDescriptor;
-import it.univr.satella.sensors.SensorRepository;
+import it.univr.satella.notification.NotificationService;
+import it.univr.satella.sensors.*;
 import it.univr.satella.station.exceptions.*;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -16,11 +15,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -31,14 +31,23 @@ public class StationManager {
     static Logger log = LoggerFactory.getLogger(StationManager.class);
     @Autowired private Environment env;
 
+    @Autowired
+    private NotificationService notificationService;
+
     private final SensorDriverRepository sensorDriverRepository;
     private final SensorRepository sensorRepository;
+    private final SampleRepository sampleRepository;
+    private final AlarmService alarmService;
 
     /**
      * All currently attached sensors
      */
     private HashMap<Integer, SensorBundle> sensorBundles = new HashMap<>();
+    private int lastSensorBundleId;
+
     private final StationDescriptor descriptor;
+
+    private int currentTimestamp;
 
     /**
      * Constructs the station
@@ -47,11 +56,18 @@ public class StationManager {
     @Autowired
     public StationManager(@Value("${filepath.station}") String filepath,
                           SensorDriverRepository sensorDriverRepository,
-                          SensorRepository sensorRepository)
+                          SensorRepository sensorRepository,
+                          SampleRepository sampleRepository,
+                          AlarmService alarmService)
     throws IOException
     {
         this.sensorDriverRepository = sensorDriverRepository;
         this.sensorRepository = sensorRepository;
+        this.sampleRepository = sampleRepository;
+        this.alarmService = alarmService;
+
+        this.lastSensorBundleId = 0;
+        this.currentTimestamp = 0;
 
         ObjectMapper mapper = new ObjectMapper();
         descriptor = mapper.readValue(
@@ -77,9 +93,8 @@ public class StationManager {
     throws Exception
     {
         // Check that the sensor exists
-        Optional<SensorDescriptor> sensorOpt = sensorRepository.getByModel(sensorModel);
-        if (sensorOpt.isEmpty()) throw new SensorNotFoundException(sensorModel);
-        SensorDescriptor sensor = sensorOpt.get();
+        SensorDescriptor sensor = sensorRepository.findByModel(sensorModel);
+        if (sensor == null) throw new SensorNotFoundException(sensorModel);
 
         // Check that the slot exists
         List<SlotDescriptor> slots = descriptor.getSlots();
@@ -106,7 +121,9 @@ public class StationManager {
             bundle.shutdown();
         }
 
-        SensorBundle bundle = new SensorBundle(sensor, driver, slot);
+        SensorBundle bundle = new SensorBundle(lastSensorBundleId, sensor, driver, slot);
+        lastSensorBundleId += 1;
+
         sensorBundles.put(slot, bundle);
         bundle.initialize();
     }
@@ -142,7 +159,8 @@ public class StationManager {
 
         for (SlotConfig con : cons) {
             attach(con.slot, con.sensorModel);
-            log.info("Successfully attached sensor " + con.sensorModel + " at " + con.slot);
+            if (notificationService != null)
+                notificationService.info("Successfully attached sensor " + con.sensorModel + " at " + con.slot);
         }
     }
 
@@ -150,13 +168,25 @@ public class StationManager {
      * Samples all attached sensors and generates a list
      * of measurements
      */
-    public List<Pair<MeasureType, Float>> measure() {
-        List<Pair<MeasureType, Float>> result = new ArrayList<>();
+    @Scheduled(fixedDelay = 1000)
+    public void measure() {
         for (SensorBundle sensor : sensorBundles.values()) {
-            Optional<Pair<MeasureType, Float>> valueOpt = sensor.measure();
-            valueOpt.ifPresent(result::add);
+            SensorDescriptor descriptor = sensor.getDescriptor();
+
+            Optional<Float> valueOpt = sensor.measure();
+            if (valueOpt.isPresent()) {
+                float value = valueOpt.get();
+
+                sensor.setLastValue(value);
+                sampleRepository.save(
+                        new Sample(sensor.getId(), LocalDateTime.now(), descriptor.getMeasureUnit(), value));
+
+                // Create alarm if necessary
+                if (descriptor.isAlarmValue(value))
+                    alarmService.sendAlarm(new Alarm(descriptor.getModel(), sensor.getSlot(), value, LocalDateTime.now()));
+            }
         }
-        return result;
+        currentTimestamp += 1;
     }
 
 //    private HashMap<Integer, SensorBundle> sensorBundles = new HashMap<>();

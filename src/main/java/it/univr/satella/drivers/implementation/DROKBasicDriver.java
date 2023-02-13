@@ -1,7 +1,8 @@
 package it.univr.satella.drivers.implementation;
 
 import ch.qos.logback.core.joran.sanity.Pair;
-import it.univr.satella.sensors.MeasureType;
+import it.univr.satella.sensors.Sample;
+import it.univr.satella.sensors.SampleUnit;
 import it.univr.satella.sensors.SensorDescriptor;
 import it.univr.satella.drivers.ISensorDriver;
 import it.univr.satella.drivers.SensorDriver;
@@ -39,7 +40,7 @@ public class DROKBasicDriver extends SensorDriver {
     }
 
     @Override
-    public Optional<Pair<MeasureType, Float>> measure() {
+    public Optional<Float> measure() {
         return Optional.empty();
     }
 }
