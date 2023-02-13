@@ -32,7 +32,7 @@ public class SampleSenderTest {
 
         // Create sender with an always failing satellite connection
         SampleSender sampleSender = new SampleSender(notificationService, sampleRepository,
-                ((obj, url) -> false), MAXIMUM_DELAY_MIN);
+                ((obj, url) -> false));
 
         // Tries to send data 9 times, we should not have a notification
         for (int i = 0; i < MAXIMUM_DELAY_MIN - 1; i++)

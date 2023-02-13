@@ -24,7 +24,7 @@ public class SampleSender {
      * Maximum delay between successfully comunications
      * before notifying the user
      */
-    private final int maximumDelayMin;
+    private final static int MAXIMUM_DELAY_MIN = 30;
 
     /**
      * Currently accumulated delay
@@ -37,13 +37,11 @@ public class SampleSender {
     public SampleSender(
             NotificationService notificationService,
             SampleRepository sampleRepository,
-            ISatelliteCom satellite,
-            int maximumDelayMin)
+            ISatelliteCom satellite)
     {
         this.notificationService = notificationService;
         this.sampleRepository = sampleRepository;
         this.satellite = satellite;
-        this.maximumDelayMin = maximumDelayMin;
         this.delayMin = 0;
         this.lastTime = LocalDateTime.now();
     }
@@ -58,8 +56,8 @@ public class SampleSender {
         List<Sample> samples = sampleRepository.findAllByTimeBetweenOrderByTime(lastTime, currTime);
         if (!satellite.send(samples, "http://www.meteotrento.it/")) {
             delayMin += 1;
-            if (delayMin >= maximumDelayMin)
-                notificationService.warning("Unable to send data after " + maximumDelayMin + " mins");
+            if (delayMin >= MAXIMUM_DELAY_MIN)
+                notificationService.warning("Unable to send data after " + MAXIMUM_DELAY_MIN + " mins");
         }
         else {
             lastTime = currTime;
