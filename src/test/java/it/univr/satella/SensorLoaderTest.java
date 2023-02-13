@@ -29,9 +29,19 @@ public class SensorLoaderTest {
     @Autowired private SensorRepository sensorRepository;
 
     @Test
+    public void testLoaderNoFile() {
+
+        sensorRepository.deleteAll();
+        SensorLoader sensorLoader = new SensorLoader(sensorRepository);
+        sensorLoader.loadSensorsAt("src/test/resources/sensors/nonexistent.json");
+        assertEquals(0, sensorRepository.count());
+    }
+
+    @Test
     public void testLoaderValid() {
 
         // Load the correct sensors
+        sensorRepository.deleteAll();
         SensorLoader sensorLoader = new SensorLoader(sensorRepository);
         sensorLoader.loadSensorsAt("src/test/resources/sensors/correct.json");
 
@@ -59,6 +69,7 @@ public class SensorLoaderTest {
     public void testLoaderInvalid() {
 
         // Load the incorrect sensors
+        sensorRepository.deleteAll();
         SensorLoader sensorLoader = new SensorLoader(sensorRepository);
         sensorLoader.loadSensorsAt("src/test/resources/sensors/incorrect.json");
 

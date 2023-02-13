@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +46,10 @@ public class StationManager {
     private HashMap<Integer, SensorBundle> sensorBundles = new HashMap<>();
     private int lastSensorBundleId;
 
-    private final StationDescriptor descriptor;
+    /**
+     * All available slots
+     */
+    private List<SlotDescriptor> slotDescriptorList;
 
     private int currentTimestamp;
 
@@ -59,7 +63,6 @@ public class StationManager {
                           SensorRepository sensorRepository,
                           SampleRepository sampleRepository,
                           AlarmService alarmService)
-    throws IOException
     {
         this.sensorDriverRepository = sensorDriverRepository;
         this.sensorRepository = sensorRepository;
@@ -69,18 +72,24 @@ public class StationManager {
         this.lastSensorBundleId = 0;
         this.currentTimestamp = 0;
 
-        ObjectMapper mapper = new ObjectMapper();
-        descriptor = mapper.readValue(
-                Paths.get(filepath).toFile(),
-                StationDescriptor.class
-        );
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            slotDescriptorList = List.of(mapper.readValue(
+                    Paths.get(filepath).toFile(),
+                    SlotDescriptor[].class
+            ));
 
-        log.info("Successfully loaded station descriptor");
-        List<SlotDescriptor> slots = descriptor.getSlots();
-        for (int i = 0; i < slots.size(); i++) {
-            SlotDescriptor slotDescriptor = slots.get(i);
-            log.info("Slot " + i + " (voltage: " + slotDescriptor.getVoltage()
-                    + ", amperage: " + slotDescriptor.getAmperage() + ")");
+            log.info("Successfully loaded station descriptor");
+            for (int i = 0; i < slotDescriptorList.size(); i++) {
+                SlotDescriptor slotDescriptor = slotDescriptorList.get(i);
+                log.info("Slot " + i + " (voltage: " + slotDescriptor.getVoltage()
+                        + ", amperage: " + slotDescriptor.getAmperage() + ")");
+            }
+        }
+        catch (IOException e) {
+            if (notificationService != null)
+                notificationService.error("Unable to load station slots!");
+            slotDescriptorList = new ArrayList<>();
         }
     }
 
@@ -97,12 +106,11 @@ public class StationManager {
         if (sensor == null) throw new SensorNotFoundException(sensorModel);
 
         // Check that the slot exists
-        List<SlotDescriptor> slots = descriptor.getSlots();
-        if (slots.size() < slot)
+        if (slotDescriptorList.size() < slot)
             throw new InvalidSlotException(slot);
 
         // Check that the slot is compatible with the sensor
-        SlotDescriptor slotDescriptor = slots.get(slot);
+        SlotDescriptor slotDescriptor = slotDescriptorList.get(slot);
         if (!slotDescriptor.isCompatible(sensor))
             throw new SensorNotCompatibleException(sensorModel, slot);
 
@@ -189,7 +197,7 @@ public class StationManager {
         currentTimestamp += 1;
     }
 
-    public StationDescriptor getDescriptor() {
-        return descriptor;
+    public List<SlotDescriptor> getSlotDescriptors() {
+        return slotDescriptorList;
     }
 }

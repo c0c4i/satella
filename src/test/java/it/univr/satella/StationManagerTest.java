@@ -1,7 +1,6 @@
 package it.univr.satella;
 
 import it.univr.satella.alarm.AlarmService;
-import it.univr.satella.comunication.ISatelliteCom;
 import it.univr.satella.comunication.SatelliteCom;
 import it.univr.satella.drivers.SensorDriver;
 import it.univr.satella.drivers.SensorDriverRepository;
@@ -11,7 +10,6 @@ import it.univr.satella.sensors.SensorDescriptor;
 import it.univr.satella.sensors.SensorLoader;
 import it.univr.satella.sensors.SensorRepository;
 import it.univr.satella.station.SlotDescriptor;
-import it.univr.satella.station.StationDescriptor;
 import it.univr.satella.station.StationManager;
 import it.univr.satella.station.exceptions.*;
 import org.junit.Before;
@@ -49,7 +47,7 @@ public class StationManagerTest {
     private StationManager station;
 
     @Before
-    public void initialize() throws IOException  {
+    public void initialize()  {
 
         // Load all sensors
         SensorLoader sensorLoader = new SensorLoader(sensorRepository);
@@ -77,14 +75,14 @@ public class StationManagerTest {
 
     @Test
     public void testDeserialization() {
-        StationDescriptor descriptor = station.getDescriptor();
-        assertEquals(2, descriptor.getSlots().size());
+        List<SlotDescriptor> slotDescriptorList = station.getSlotDescriptors();
+        assertEquals(2, slotDescriptorList.size());
 
-        SlotDescriptor s1 = descriptor.getSlots().get(0);
+        SlotDescriptor s1 = slotDescriptorList.get(0);
         assertEquals(5.0, s1.getVoltage(), 0.0);
         assertEquals(2.0, s1.getAmperage(), 0.0);
 
-        SlotDescriptor s2 = descriptor.getSlots().get(1);
+        SlotDescriptor s2 = slotDescriptorList.get(1);
         assertEquals(3.0, s2.getVoltage(), 0.0);
         assertEquals(2.0, s2.getAmperage(), 0.0);
     }
