@@ -21,7 +21,7 @@ import java.util.Optional;
 /**
  * Loader responsible of loading all sensor descriptors
  */
-@Component
+@Component("SensorLoader")
 public class SensorLoader {
 
     private final SensorRepository sensorRepository;

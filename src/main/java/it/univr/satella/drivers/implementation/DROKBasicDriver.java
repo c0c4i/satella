@@ -10,6 +10,7 @@ import it.univr.satella.drivers.SensorDriverPublish;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.Random;
 
 @Component
 @SensorDriverPublish
@@ -41,6 +42,7 @@ public class DROKBasicDriver extends SensorDriver {
 
     @Override
     public Optional<Float> measure() {
-        return Optional.empty();
+        Random rand = new Random();
+        return Optional.of(rand.nextFloat() * (17 - 15) + 15);
     }
 }

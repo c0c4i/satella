@@ -10,7 +10,7 @@
 </head>
 
 <body>
-
+<div class="container-md">
 <h1>Sensors</h1>
     <a href="/" class="btn btn-primary"> Go to dashboard </a>
     <table class="table">
@@ -27,22 +27,24 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="element: ${sensors}">
+        <tr th:each="sensor: ${sensors}">
             <td>
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
                 </div>
             </td>
-            <td th:text="${element.key}"><b>10</b></td>
-            <td th:text="${element.value.getDescriptor().model}">John</td>
-            <td th:text="${element.value.getDescriptor().driver}">John</td>
-            <td th:text="${element.value.getDescriptor().minAmperage + ' ~ '  + element.value.getDescriptor().maxAmperage}">John</td>
-            <td th:text="${element.value.getDescriptor().minVoltage + ' ~ '  + element.value.getDescriptor().maxVoltage}">John</td>
-            <td th:text="${element.value.getDescriptor().minMeasureValue + ' ~ '  + element.value.getDescriptor().maxMeasureValue}">John</td>
-            <td th:text="${element.value.getDescriptor().minMeasureValue + ' ~ '  + element.value.getDescriptor().maxMeasureValue}">John</td>
+            <td th:text="${sensor.slot}"><b>10</b></td>
+            <td th:text="${sensor.getDescriptor().model}">John</td>
+            <td th:text="${sensor.getDescriptor().driver}">John</td>
+            <td th:text="${sensor.getDescriptor().minAmperage + ' ~ '  + sensor.getDescriptor().maxAmperage}">John</td>
+            <td th:text="${sensor.getDescriptor().minVoltage + ' ~ '  + sensor.getDescriptor().maxVoltage}">John</td>
+            <td th:text="${sensor.getDescriptor().minMeasureValue + ' ~ '  + sensor.getDescriptor().maxMeasureValue}">John</td>
+            <td th:text="${sensor.getDescriptor().minMeasureValue + ' ~ '  + sensor.getDescriptor().maxMeasureValue}">John</td>
 <!--            <button class="btn"><i class="fa-regular fa-arrow-right"></i></button>-->
-            <td> <a href="sensors/10" class="btn" th:href="'sensors/' + ${element.key}"> <i class="fa fa-angle-right"></i> </a></td>
+            <td> <a href="sensors/10" class="btn" th:href="'sensors/' + ${sensor.id}"> <i class="fa fa-angle-right"></i> </a></td>
         </tbody>
     </table>
+</div>
 </body>
+
 </html>

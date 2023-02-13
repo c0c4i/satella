@@ -14,18 +14,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
+@DependsOn("SensorLoader")
 public class StationManager {
 
     static Logger log = LoggerFactory.getLogger(StationManager.class);
@@ -182,16 +189,30 @@ public class StationManager {
                         new Sample(sensor.getId(), LocalDateTime.now(), descriptor.getMeasureUnit(), value));
 
                 // Create alarm if necessary
-                if (descriptor.isAlarmValue(value))
-                    alarmService.sendAlarm(new Alarm(descriptor.getModel(), sensor.getSlot(), value, LocalDateTime.now()));
+//                if (descriptor.isAlarmValue(value))
+//                    alarmService.sendAlarm(new Alarm(descriptor.getModel(), sensor.getSlot(), value, LocalDateTime.now()));
             }
         }
         currentTimestamp += 1;
     }
 
-//    private HashMap<Integer, SensorBundle> sensorBundles = new HashMap<>();
-    public HashMap<Integer, SensorBundle> getSensors() {
-        return sensorBundles;
+    public List<SensorBundle> getSensors() {
+        return sensorBundles.values().stream().toList();
+    }
+
+    public SensorBundle getSensorById(int id) throws SensorByIdNotFoundException {
+       List<SensorBundle> sensors =  getSensors().stream().filter(article -> article.getId() == id).collect(Collectors.toList());
+       if(sensors.size() == 0) {
+          throw new SensorByIdNotFoundException();
+       }
+       return sensors.get(0);
+    }
+
+    public List<Sample> getChartOfSensorOfWeek(int id)  {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = now.with(TemporalAdjusters.previous(DayOfWeek.MONDAY)).with(LocalTime.MIN);
+        LocalDateTime end = now.withHour(23).withMinute(59).withSecond(0).withNano(0);
+        return sampleRepository.findAllBySensorIdAndTimeBetweenOrderByTime(id, start, end);
     }
 
     public StationDescriptor getDescriptor() {
