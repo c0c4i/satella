@@ -1,8 +1,12 @@
 package it.univr.satella;
 
 import it.univr.satella.alarm.AlarmService;
+import it.univr.satella.comunication.ISatelliteCom;
+import it.univr.satella.comunication.SatelliteCom;
 import it.univr.satella.drivers.SensorDriver;
 import it.univr.satella.drivers.SensorDriverRepository;
+import it.univr.satella.notification.NotificationRepository;
+import it.univr.satella.notification.NotificationService;
 import it.univr.satella.sensors.SensorDescriptor;
 import it.univr.satella.sensors.SensorLoader;
 import it.univr.satella.sensors.SensorRepository;
@@ -27,7 +31,13 @@ import static org.junit.Assert.assertEquals;
  * Test the functionality and integration of the StationManager
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { SensorRepository.class, AlarmService.class })
+@SpringBootTest(classes = {
+        SensorRepository.class,
+        AlarmService.class,
+        NotificationRepository.class,
+        NotificationService.class,
+        SatelliteCom.class
+})
 @EnableAutoConfiguration
 public class StationManagerTest {
 
