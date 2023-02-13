@@ -15,10 +15,6 @@ public class SensorBundle {
     private float lastValue;
     private boolean enabled;
 
-    public SensorDescriptor getDescriptor() {
-        return descriptor;
-    }
-
     public SensorBundle(int id, SensorDescriptor descriptor, ISensorDriver driver, int slot) {
         this.id = id;
         this.descriptor = descriptor;
