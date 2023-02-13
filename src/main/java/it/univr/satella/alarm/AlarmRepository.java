@@ -9,4 +9,10 @@ import java.util.List;
  * Contains all alarms to be processed
  */
 @Repository
-public interface AlarmRepository extends JpaRepository<Alarm, Integer> { }
+public interface AlarmRepository extends JpaRepository<Alarm, Integer> {
+
+    /**
+     * Find all alarm give their status
+     */
+    List<Alarm> findByStatus(AlarmStatus status);
+}

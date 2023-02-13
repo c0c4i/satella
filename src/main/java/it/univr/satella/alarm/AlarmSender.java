@@ -30,13 +30,16 @@ public class AlarmSender {
 
     @Scheduled(fixedDelay = 1000 * 60 * 5)
     public void sendAlarms() {
-        List<Alarm> alarms = alarmRepository.findAll();
+        List<Alarm> alarms = alarmRepository.findByStatus(AlarmStatus.ToBeProcessed);
         if (!alarms.isEmpty()) {
-            if (satellite.send(alarms, "http://www.meteotrento.it/")) {
-                log.info("Successfully sent alarms to control center");
-                alarmRepository.deleteAll();
-            } else {
-                log.info("Unable to send alarms to control center");
+            for (Alarm alarm : alarms) {
+                if (satellite.send(alarm, "http://www.poliziaforestale.it/")) {
+                    log.info("Successfully sent alarm " + alarm.id + " to control center");
+                    alarm.setProcessed();
+                    alarmRepository.save(alarm);
+                } else {
+                    log.info("Unable to send alarm " + alarm.id + " to control center");
+                }
             }
         }
     }

@@ -3,7 +3,7 @@ package it.univr.satella.comunication;
 import org.springframework.stereotype.Component;
 
 /**
- * Fake Comunicator that always succeeds
+ * Fake satellite com link that always succeeds
  */
 @Component
 public class SatelliteCom implements ISatelliteCom {

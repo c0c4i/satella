@@ -3,6 +3,7 @@ package it.univr.satella;
 import it.univr.satella.alarm.Alarm;
 import it.univr.satella.alarm.AlarmRepository;
 import it.univr.satella.alarm.AlarmSender;
+import it.univr.satella.alarm.AlarmStatus;
 import it.univr.satella.comunication.ISatelliteCom;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,8 +35,11 @@ public class AlarmTest {
         AlarmSender sender = new AlarmSender(alarmRepository, (obj, url) -> true);
         sender.sendAlarms();
 
-        List<Alarm> alarms = alarmRepository.findAll();
-        assertTrue(alarms.isEmpty());
+        List<Alarm> alarmsToBeProcessed = alarmRepository.findByStatus(AlarmStatus.ToBeProcessed);
+        assertTrue(alarmsToBeProcessed.isEmpty());
+
+        List<Alarm> alarmsProcessed = alarmRepository.findByStatus(AlarmStatus.Processed);
+        assertFalse(alarmsProcessed.isEmpty());
     }
 
     @Test
@@ -45,7 +49,10 @@ public class AlarmTest {
         AlarmSender sender = new AlarmSender(alarmRepository, (obj, url) -> false);
         sender.sendAlarms();
 
-        List<Alarm> alarms = alarmRepository.findAll();
-        assertFalse(alarms.isEmpty());
+        List<Alarm> alarmsToBeProcessed = alarmRepository.findByStatus(AlarmStatus.ToBeProcessed);
+        assertFalse(alarmsToBeProcessed.isEmpty());
+
+        List<Alarm> alarmsProcessed = alarmRepository.findByStatus(AlarmStatus.Processed);
+        assertTrue(alarmsProcessed.isEmpty());
     }
 }
