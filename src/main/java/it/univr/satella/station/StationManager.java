@@ -159,6 +159,11 @@ public class StationManager {
         return result;
     }
 
+//    private HashMap<Integer, SensorBundle> sensorBundles = new HashMap<>();
+    public HashMap<Integer, SensorBundle> getSensors() {
+        return sensorBundles;
+    }
+
     public StationDescriptor getDescriptor() {
         return descriptor;
     }

@@ -14,6 +14,10 @@ public class SensorBundle {
 
     private boolean enabled;
 
+    public SensorDescriptor getDescriptor() {
+        return descriptor;
+    }
+
     public SensorBundle(SensorDescriptor descriptor, ISensorDriver driver, int slot) {
         this.descriptor = descriptor;
         this.driver = driver;
