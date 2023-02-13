@@ -1,64 +1,20 @@
 package it.univr.satella.sensors;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-
-/**
- * Repository responsible for storing and retrieving all
- * known sensor descriptors
- */
-@Component
-public class SensorRepository {
-    static Logger log = LoggerFactory.getLogger(SensorRepository.class);
+@Repository
+public interface SensorRepository extends JpaRepository<SensorDescriptor, String> {
 
     /**
-     * All known sensors
+     * Obtains a sensor descriptor by its model
      */
-    private List<SensorDescriptor> sensorDescriptorList = new ArrayList<>();
+    SensorDescriptor findByModel(String model);
 
     /**
-     * Construct the repository by loading all descriptors
-     * in the sensors.json file
+     * Obtains all sensor descriptors
      */
-    public SensorRepository(@Value("${filepath.sensors}") String filepath)
-    throws IOException
-    {
-        ObjectMapper mapper = new ObjectMapper();
-        SensorDescriptor[] values = mapper.readValue(
-                Paths.get(filepath).toFile(),
-                SensorDescriptor[].class
-        );
-        for (SensorDescriptor value : values) {
-            if (value.isValid()) {
-                log.info("Found valid sensor descriptor: " + value.getModel());
-                sensorDescriptorList.add(value);
-            }
-            else {
-                log.warn("Found invalid sensor descriptor: " + value.getModel());
-            }
-        }
-    }
-
-    /**
-     * Retrieves a sensor descriptor by its model
-     */
-    public Optional<SensorDescriptor> getByModel(String model) {
-        return sensorDescriptorList.stream()
-                .filter(x -> x.getModel().equals(model))
-                .findFirst();
-    }
-
-    public List<SensorDescriptor> getAll() {
-        return sensorDescriptorList;
-    }
+    List<SensorDescriptor> findAll();
 }

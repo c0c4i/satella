@@ -7,6 +7,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         SensorDriverRepositoryTest.class,
+        SensorLoaderTest.class,
         SensorRepositoryTest.class,
         StationManagerTest.class,
         SensorDescriptorTest.class
