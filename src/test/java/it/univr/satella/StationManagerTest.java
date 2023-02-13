@@ -1,6 +1,6 @@
 package it.univr.satella;
 
-import it.univr.satella.alarm.AlarmRepository;
+import it.univr.satella.alarm.AlarmService;
 import it.univr.satella.drivers.SensorDriver;
 import it.univr.satella.drivers.SensorDriverRepository;
 import it.univr.satella.sensors.SensorDescriptor;
@@ -11,13 +11,10 @@ import it.univr.satella.station.StationDescriptor;
 import it.univr.satella.station.StationManager;
 import it.univr.satella.station.exceptions.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -30,14 +27,14 @@ import static org.junit.Assert.assertEquals;
  * Test the functionality and integration of the StationManager
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { SensorRepository.class, AlarmRepository.class })
+@SpringBootTest(classes = { SensorRepository.class, AlarmService.class })
 @EnableAutoConfiguration
 public class StationManagerTest {
 
     private final static String STATION_CONFIG_FILE = "src/test/resources/station.json";
 
     @Autowired private SensorRepository sensorRepository;
-    @Autowired private AlarmRepository alarmRepository;
+    @Autowired private AlarmService alarmService;
 
     private StationManager station;
 
@@ -65,7 +62,7 @@ public class StationManagerTest {
         ));
         sensorDriverRepository.printSensorDrivers();
         station = new StationManager(STATION_CONFIG_FILE,
-                sensorDriverRepository, sensorRepository, null, alarmRepository);
+                sensorDriverRepository, sensorRepository, null, alarmService);
     }
 
     @Test
