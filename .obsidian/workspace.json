@@ -11,12 +11,8 @@
             "id": "109d9296ec0e2570",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "TO DO.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -85,7 +81,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "TO DO.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +97,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "TO DO.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -124,9 +118,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "TO DO.md"
-              }
+              "state": {}
             }
           }
         ]
@@ -147,5 +139,8 @@
     }
   },
   "active": "109d9296ec0e2570",
-  "lastOpenFiles": []
+  "lastOpenFiles": [
+    "RELAZIONE (1).md",
+    "TO DO.md"
+  ]
 }

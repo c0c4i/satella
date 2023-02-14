@@ -15,7 +15,7 @@
     <div class="container-md">
         <div class="row my-2">
             <div class="col">
-                <h1 id="title">drok-temperature-mk1</h1>
+                <h1 id="title" th:text="${sensor.modelName}">drok-temperature-mk1</h1>
             </div>
             <div class="col-md-auto">
                 <a id="action-all-sensors" href="/sensors" class="btn btn-primary"> Tutti i sensori </a>
@@ -23,43 +23,38 @@
         </div>
 
         <!-- Message when sensor fields is not correct -->
-<!--        <div class="alert alert-danger" id="form-validation-error" role="alert">-->
-<!--            "Ampere minimo" deve essere inferiore ad "Ampere massimo"-->
-<!--        </div>-->
+        <div th:if="${error != null}" th:text="${error}" class="alert alert-danger"
+            th:id="'form-validation-error-' + ${errorType}" role="alert">
+            Questo è un errore di validazione nel form!
+        </div>
 
-        <form class="row g-3">
+        <form action="/sensors/_id/update" th:action="'/sensors/' + ${sensor.modelName} + '/update'" class="row g-3">
             <div class="col-12">
                 <label for="model" class="form-label">Model</label>
-                <input type="text" class="form-control" id="model-input" value="drok-temperature-mk1">
+                <input type="text" class="form-control" id="model-name" name="model-name" th:value="${modelName}">
             </div>
             <div class="col-md-6">
                 <label for="ampere-min" class="form-label">Ampere minimo</label>
-                <input type="text" class="form-control" id="ampere-min" value="2">
+                <input type="text" class="form-control" id="ampere-min" name="ampere-min" th:value="${ampereMin}">
             </div>
             <div class="col-md-6">
                 <label for="ampere-max" class="form-label">Ampere massimo</label>
-                <input type="text" class="form-control" id="ampere-max" value="4">
+                <input type="text" class="form-control" id="ampere-max" name="ampere-max" th:value="${ampereMax}">
             </div>
             <div class="col-md-6">
                 <label for="voltage-min" class="form-label">Voltaggio minimo</label>
-                <input type="text" class="form-control" id="voltage-min" value="1">
+                <input type="text" class="form-control" id="voltage-min" name="voltage-min" th:value="${voltageMin}">
             </div>
             <div class="col-md-6">
                 <label for="voltage-max" class="form-label">Voltaggio massimo</label>
-                <input type="text" class="form-control" id="voltage-max" value="8">
-            </div>
-            <div class="col-md-6">
-                <label for="range-min" class="form-label">Range minimo</label>
-                <input type="text" class="form-control" id="range-min" value="-10">
-            </div>
-            <div class="col-md-6">
-                <label for="range-max" class="form-label">Range massimo</label>
-                <input type="text" class="form-control" id="range-max" value="30">
+                <input type="text" class="form-control" id="voltage-max" name="voltage-max" th:value="${voltageMax}">
             </div>
             <div class="row my-2">
-                <div class="col"></div>
-                <div class="col-md-auto">
+                <div class="col">
                     <a id="action-delete" href="/sensors/_id/delete" class="btn btn-danger"> Elimina </a>
+                </div>
+                <div class="col-md-auto">
+                    <a id="action-cancel" href="/sensors/_id/reset" class="btn btn-secondary"> Annulla </a>
                     <button id="action-create" type="submit" class="btn btn-primary">Aggiorna sensore</button>
                 </div>
             </div>

@@ -46,23 +46,27 @@ public class ConnectController {
         Slot slot = slotService.getSlotByPort(id);
         if(slot == null) {
             // Redirect to /slots with error=1
-            attributes.addAttribute("error", 1);
+            attributes.addFlashAttribute("errorType", 1);
+            attributes.addFlashAttribute("error", "Lo slot selezionato non esiste!");
             return new RedirectView("/slots");
         }
 
         Sensor sensor = sensorService.findSensorByModelName(modelName);
         if(sensor == null) {
             // Redirect to /slots with error=2
-            attributes.addAttribute("error", 2);
+            attributes.addFlashAttribute("errorType", 2);
+            attributes.addFlashAttribute("error", "Il sensore selezionato non esiste!");
             return new RedirectView("/slots");
         }
 
         boolean result = slotService.attachSensorToSlot(id, sensor);
 
         if(result) {
-            attributes.addAttribute("success", 1);
+            attributes.addFlashAttribute("successType", 1);
+            attributes.addFlashAttribute("success", "Sensore collegato con successo!");
         } else {
-            attributes.addAttribute("error", 3);
+            attributes.addFlashAttribute("errorType", 3);
+            attributes.addFlashAttribute("error", "Lo slot non supporta il sensore!");
         }
 
         return new RedirectView("/slots");

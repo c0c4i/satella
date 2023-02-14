@@ -18,12 +18,22 @@
                 <h1 id="title">Tutti i sensori</h1>
             </div>
             <div class="col-md-auto">
+                <a href="/slots" id="action-all-slots" class="btn btn-primary"> Tutti gli slots </a>
+            </div>
+            <div class="col-md-auto">
                 <a href="/sensors/new" id="action-new-sensor" class="btn btn-primary"> Nuovo sensore </a>
             </div>
         </div>
 
+        <div th:if="${success != null}">
+            <div class="alert alert-success" th:id="'alert-sensor-connect-success-' + ${successType}"
+                th:text="${success}" role="alert">
+                Esempio di messaggio di successo!
+            </div>
+        </div>
+
         <!-- List of all {sensors} to select one to connect on {slot} -->
-        <div class="card my-2" th:each="sensor : ${sensors}">
+        <div class="card my-2" th:each="sensor : ${sensors}" th:id="'sensor-card-' + ${sensor.modelName}">
             <div class="card-body">
                 <div class="row">
                     <div class="col">
@@ -46,7 +56,7 @@
                     <div class="col-md-auto">
                         <!-- Call controller to view and edit {sensor} details -->
                         <a href="/sensors/_id" th:href="'/sensors/' + ${sensor.modelName}" id="action-sensor-details"
-                            class="btn btn-primary"> Dettagli
+                            class="btn btn-primary"> Modifica
                         </a>
                     </div>
                 </div>

@@ -23,7 +23,7 @@
         </div>
 
         <!-- List of all {sensors} to select one to connect on {slot} -->
-        <div class="card my-2" th:each="sensor : ${sensors}">
+        <div class="card my-2" th:each="sensor : ${sensors}" th:id="'sensor-card-' + ${sensor.modelName}">
             <div class="card-body">
                 <div class="row">
                     <div class="col">
