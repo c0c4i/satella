@@ -1,4 +1,4 @@
-package it.univr.satella.frontend.models;
+package it.univr.satella.controllers.models;
 
 public class MyData {
     private String label;

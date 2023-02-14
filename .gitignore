@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Obsidian ###
+.obsidian
+TO\ DO.md

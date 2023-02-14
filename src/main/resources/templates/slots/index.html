@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Station Manager</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container-md">
+        <div class="row my-2">
+            <div class="col">
+                <h1 id="title">Station Manager</h1>
+            </div>
+            <div id="action-all-sensors" class="col-md-auto">
+                <a href="sensors" class="btn btn-primary"> Tutti i sensori </a>
+            </div>
+        </div>
+
+        <!-- <div id="list">
+            <div th:each="item : ${data}">
+                <div>
+                    <h2>
+                        <span th:text="${item.sensor.descriptor.model}" />
+                    </h2>
+                    <span th:text="${item.labels}" />
+                </div>
+            </div>
+        </div> -->
+
+        <!-- TODO List of all slots with details of connected sensor -->
+
+        <!-- Example of slot with sensor -->
+        <div id="slot-card-{id}" class="card my-2">
+            <h5 id="slot-number" class="card-header">
+                S1
+            </h5>
+            <div class="card-body">
+                <h6 id="sensor-model" class="card-title">drok-temperature-mk1</h6>
+
+                <ul class="list-group list-group-horizontal my-2" id="sensor-specs">
+                    <li id="ampere-specs" class="list-group-item">
+                        <b>Ampere</b> 2.00 ~ 4.00
+                    </li>
+                    <li id="voltage-specs" class="list-group-item">
+                        <b>Voltage</b> 1.00 ~ 8.00
+                    </li>
+                </ul>
+                <!--                <a id="action-remove-sensor" href="/clear-slot/0" th:href="'clear-slot/' + ${slot.id}"-->
+                <!--                    class="btn btn-danger btn-sm">Remove</a>-->
+                <a id="action-remove-sensor" href="/clear-slot/0" class="btn btn-danger btn-sm">Remove</a>
+            </div>
+        </div>
+
+        <!-- Example of empty slot -->
+        <div class="card my-2">
+            <h5 id="slot-number" class="card-header">
+                S2
+            </h5>
+            <div class="card-body">
+                <p id="empty-slot-description" class="card-text">Nessun sensore presente in questa porta</p>
+                <a id="action-connect-sensor" href="/slots/_id/connect.html"
+                    th:href="'/slots/' + ${slot.id} + '/connect'" class="btn btn-primary btn-sm">Collega</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
