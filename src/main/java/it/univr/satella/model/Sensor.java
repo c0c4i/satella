@@ -51,6 +51,16 @@ public class Sensor {
     }
 
     /**
+     * Return true if the slot is compatible with this
+     * sensor
+     */
+    public boolean isCompatible(SlotCapabilities capabilities) {
+        boolean amperageCheck = minAmperage <= capabilities.amperage && capabilities.amperage <= maxAmperage;
+        boolean voltageCheck  = minVoltage  <= capabilities.voltage  && capabilities.voltage  <= maxVoltage;
+        return amperageCheck && voltageCheck;
+    }
+
+    /**
      * Model of the sensor, this is used as
      * the identifier.
      */

@@ -22,7 +22,7 @@ public class Slot {
         this.slot = slot;
     }
 
-    public SlotCapabilities getDescriptor() {
+    public SlotCapabilities getCapabilities() {
         return slotCapabilities;
     }
 

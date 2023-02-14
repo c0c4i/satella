@@ -2,11 +2,13 @@ package it.univr.satella.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.univr.satella.model.Sensor;
+import it.univr.satella.model.SlotCapabilities;
 import it.univr.satella.repository.SensorRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -18,7 +20,7 @@ import java.util.List;
 /**
  * Loader responsible of loading all sensor descriptors
  */
-@Component
+@Service
 public class SensorService {
 
     private final Environment environment;
@@ -61,5 +63,15 @@ public class SensorService {
             // TODO
         }
         return new ArrayList<>();
+    }
+
+    /**
+     * Returns all sensors compatible with a slot
+     * @param capabilities Capabilities that need o be matched
+     */
+    public List<Sensor> findAllCompatible(SlotCapabilities capabilities) {
+        return sensorRepository.findAll().stream()
+                .filter(x -> x.isCompatible(capabilities))
+                .toList();
     }
 }
