@@ -16,7 +16,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.*;
 
 @Controller
-public class AppController {
+public class DisconnectSensorController {
 
     @Autowired
     private SensorService sensorService;
@@ -24,29 +24,20 @@ public class AppController {
     @Autowired
     private SlotService slotService;
 
-    @RequestMapping("/slots")
-    public String slots(Model model){
-        List<Slot> slots = slotService.getSlots();
-        if(slots.size() == 0) {
-            return "slots/empty";
-        }
-        model.addAttribute("slots", slots );
-        return "slots/index";
-    }
+    @RequestMapping("/slots/{id}/disconnect")
+    public RedirectView connectSensor(@PathVariable("id") int id, RedirectAttributes attributes) {
 
-    @RequestMapping("/sensors")
-    public String sensors(Model model){
-        List<Sensor> sensors = sensorService.findAll();
-        if(sensors.size() == 0) {
-            return "sensors/empty";
+
+        boolean result = slotService.detachSensorFromSlot(id);
+
+        if(result) {
+            attributes.addFlashAttribute("successType", 2);
+            attributes.addFlashAttribute("success", "Sensore scollegato con successo!");
+        } else {
+            attributes.addFlashAttribute("errorType", 4);
+            attributes.addFlashAttribute("error", "Impossibile scollegare il sensore!");
         }
 
-        model.addAttribute("sensors", sensorService.findAll());
-        return "sensors/index";
-    }
-
-    @RequestMapping("/")
-    public RedirectView redirectSlots(){
-        return new RedirectView("slots");
+        return new RedirectView("/slots");
     }
 }

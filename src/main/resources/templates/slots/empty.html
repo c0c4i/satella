@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Station Manager</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
+</head>
+
+<body>
+<div class="container-md">
+    <div class="row my-2">
+        <div class="col">
+            <h1 id="title">Station Manager</h1>
+        </div>
+        <div id="action-all-sensors" class="col-md-auto">
+            <a href="sensors" class="btn btn-primary"> Tutti i sensori </a>
+        </div>
+    </div>
+
+    <div class="alert alert-danger" id="alert-slots-empty" role="alert">
+        Nessuno slot esistente!
+    </div>
+</div>
+</body>
+
+</html>

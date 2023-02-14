@@ -1,7 +1,6 @@
 package it.univr.satella.controllers;
 
 import it.univr.satella.model.Sensor;
-import it.univr.satella.model.Slot;
 import it.univr.satella.service.SensorService;
 import it.univr.satella.service.SlotService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.List;
-
 @Controller
-public class NewSensorController {
+public class ManageSensorController {
 
     @Autowired
     private SensorService sensorService;
@@ -24,12 +21,17 @@ public class NewSensorController {
     @Autowired
     private SlotService slotService;
 
-    @RequestMapping("/sensors/new")
-    public String newSensor(Model model) {
-        return "sensors/new";
+    @RequestMapping("/sensors/{id}")
+    public String sensorDetails(@PathVariable("id") String modelName, Model model, RedirectAttributes attributes) {
+        Sensor sensor = sensorService.findSensorByModelName(modelName);
+        if(sensor == null) {
+            return "sensors/_id/not-found";
+        }
+        model.addAttribute("sensor", sensor);
+        return "sensors/_id/index";
     }
 
-    @RequestMapping("/sensors/new/send")
+    @RequestMapping("/sensors/{id}/update")
     public RedirectView create(
             @RequestParam(name="model-name", required=false) String modelName,
             @RequestParam(name="ampere-min", required=false) String ampereMin,
@@ -49,23 +51,44 @@ public class NewSensorController {
 
             if(error != -1) {
                 attributes.addFlashAttribute("errorType", error);
-                attributes.addFlashAttribute("error", SensorValidator.getErrorMessage(error));
+                attributes.addFlashAttribute("error", getError(error));
                 attributes.addFlashAttribute("modelName", modelName);
                 attributes.addFlashAttribute("ampereMin", ampereMin);
                 attributes.addFlashAttribute("ampereMax", ampereMax);
                 attributes.addFlashAttribute("voltageMin", voltageMin);
                 attributes.addFlashAttribute("voltageMax", voltageMax);
-                return new RedirectView("/sensors/new");
+                return new RedirectView("/sensors/" + modelName);
             }
 
             Sensor sensor = new Sensor(modelName, Float.parseFloat(voltageMin), Float.parseFloat(voltageMax), Float.parseFloat(ampereMin), Float.parseFloat(ampereMax));
             sensorService.addSensor(sensor);
             attributes.addFlashAttribute("successType", 1);
-            attributes.addFlashAttribute("success", "Sensore creato con successo!");
+            attributes.addFlashAttribute("success", "Sensore aggiornato con successo!");
             return new RedirectView("/sensors");
     }
 
-        private static boolean validateFloat(String input) {
+    private static String getError(int error) {
+        switch (error) {
+            case 1:
+                return "Il modello non può contenere spazi vuoti";
+            case 2:
+                return "Il campo \"Ampere minimo\" deve essere un numero";
+            case 3:
+                return "Il campo \"Ampere massimo\" deve essere un numero";
+            case 4:
+                return "Il \"Voltaggio minimo\" deve essere un numero";
+            case 5:
+                return "Il \"Voltaggio minimo\" deve essere un numero";
+            case 6:
+                return "Il campo \"Ampere minimo\" deve essere inferiore al campo \"Ampere massimo\" ";
+            case 7:
+                return "Il \"Voltaggio minimo\" deve essere inferiore al \"Voltaggio massimo\" ";
+
+        }
+        return null;
+    }
+
+    private static boolean validateFloat(String input) {
         if(input == null) return false;
         try {
             float f = Float.parseFloat(input);
