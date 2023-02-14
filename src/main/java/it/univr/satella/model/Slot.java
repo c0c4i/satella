@@ -34,6 +34,10 @@ public class Slot {
         return attachedSensor != null;
     }
 
+    public Sensor getAttachedSensor() {
+        return attachedSensor;
+    }
+
     public void detachSensor() {
         attachedSensor = null;
     }

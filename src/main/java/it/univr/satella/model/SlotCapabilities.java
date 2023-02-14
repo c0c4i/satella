@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SlotCapabilities {
 
-    @JsonProperty
+    @JsonProperty("amperage")
     public float amperage;
 
-    @JsonProperty
+    @JsonProperty("voltage")
     public float voltage;
+
+    protected SlotCapabilities () { }
 
     public SlotCapabilities(float amperage, float voltage) {
         this.amperage = amperage;

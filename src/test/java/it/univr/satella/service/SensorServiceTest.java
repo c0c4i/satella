@@ -41,8 +41,8 @@ public class SensorServiceTest {
 
     @Test
     public void shouldLoadSensorsAtDefaultPath() {
-        sensorService.loadSensorsAtDefaultPath();
 
+        sensorService.loadSensorsAtDefaultPath();
         List<Sensor> sensorList = sensorRepository.findAll();
         assertEquals(2, sensorList.size());
 
@@ -52,7 +52,8 @@ public class SensorServiceTest {
 
     @Test
     public void shouldReadSensors() {
-        List<Sensor> sensorList = sensorService.readSensors("src/test/resources/sensors.json");
+        sensorService.loadSensors("src/test/resources/sensors.json");
+        List<Sensor> sensorList = sensorRepository.findAll();
         assertEquals(2, sensorList.size());
 
         assertTrue(sensorList.stream().anyMatch(x -> x.getModelName().equals("sensor-1")));
@@ -61,7 +62,8 @@ public class SensorServiceTest {
 
     @Test
     public void shouldNotReadSensors() {
-        List<Sensor> sensorList = sensorService.readSensors("src/test/resources/invalid.json");
+        sensorService.loadSensors("src/test/resources/invalid.json");
+        List<Sensor> sensorList = sensorRepository.findAll();
         assertEquals(0, sensorList.size());
     }
 

@@ -21,7 +21,7 @@ import java.util.List;
 public class SlotService {
 
     private final Environment environment;
-    private final HashMap<Integer, Slot> slots;
+    private HashMap<Integer, Slot> slots;
 
     @Autowired
     public SlotService(Environment environment)
@@ -32,7 +32,9 @@ public class SlotService {
 
     @PostConstruct
     public void loadSlotsAtDefaultPath() {
-        loadSlots(environment.getProperty("filepath.slots"));
+        String filepath = environment.getProperty("filepath.slots");
+        if (filepath != null)
+            loadSlots(filepath);
     }
 
     /**
@@ -47,20 +49,29 @@ public class SlotService {
                     SlotCapabilities[].class
             );
 
+            slots = new HashMap<>();
             for (int id = 0; id < slotCapabilities.length; id++)
                 slots.put(id, new Slot(id, slotCapabilities[id]));
 
         }
         catch (IOException e) {
+            int a = 0;
             // TODO
         }
     }
 
     /**
-     * Retrives all the loaded slots
+     * Retrieves all the loaded slots
      */
     public List<Slot> getSlots() {
         return slots.values().stream().toList();
+    }
+
+    /**
+     * Manually set a slot
+     */
+    public void setSlot(int id, Slot slot) {
+        slots.put(id, slot);
     }
 
     /**

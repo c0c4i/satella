@@ -7,7 +7,6 @@ import it.univr.satella.repository.SensorRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -38,30 +37,28 @@ public class SensorService {
     @PostConstruct
     public void loadSensorsAtDefaultPath() {
         String filepath = environment.getProperty("filepath.sensors");
-        List<Sensor> sensors = readSensors(filepath);
-        for (Sensor sensor : sensors)
-            if (sensor.isValid())
-                sensorRepository.save(sensor);
+        if (filepath != null)
+            loadSensors(filepath);
     }
 
     /**
      * Inserts in the repository all descriptors
      * in the sensors.json file
      */
-    public List<Sensor> readSensors(String filepath) {
+    public void loadSensors(String filepath) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Sensor[] values = mapper.readValue(
+            Sensor[] sensors = mapper.readValue(
                     Paths.get(filepath).toFile(),
                     Sensor[].class
             );
 
-            return Arrays.stream(values).toList();
-
+            for (Sensor sensor : sensors)
+                if (sensor.isValid())
+                    sensorRepository.save(sensor);
 
         } catch (IOException e) {
             // TODO
-            return new ArrayList<>();
         }
     }
 
