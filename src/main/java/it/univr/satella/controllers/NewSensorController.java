@@ -51,12 +51,12 @@ public class NewSensorController {
                 attributes.addFlashAttribute("ampere-max", ampereMax);
                 attributes.addFlashAttribute("voltage-min", voltageMin);
                 attributes.addFlashAttribute("voltage-max", voltageMax);
-                return RedirectView("");
+                //return RedirectView("");
             }
 
 
-            Sensor sensor = new Sensor(modelName, voltageMin, voltageMax, ampereMin, ampereMax);
-            sensorService.addSensor(sensor);
+            //Sensor sensor = new Sensor(modelName, voltageMin, voltageMax, ampereMin, ampereMax);
+            //sensorService.addSensor(sensor);
             return "redirect:/sensors";
     }
 

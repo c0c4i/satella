@@ -59,7 +59,7 @@
                 </h5>
                 <!-- Show if slot have a sensor attached -->
                 <div class="card-body" th:if="${slot.hasAttachedSensor()}">
-                    <h6 id="sensor-model" class="card-title" th:text="${slot.getAttachedSensor().getModelName()}">
+                    <h6 th:id="'sensor-model-'+${slot.slot}" id="sensor-model" class="card-title" th:text="${slot.getAttachedSensor().getModelName()}">
                         drok-temperature-mk1
                     </h6>
 
@@ -77,12 +77,12 @@
                             <i th:text="${slot.attachedSensor.maxVoltage}">8.00</i>
                         </li>
                     </ul>
-                    <a id="action-remove-sensor" href="/clear-slot/0" class="btn btn-danger btn-sm">Remove</a>
+                    <a th:id="'action-remove-sensor-'+${slot.slot}" id="action-remove-sensor" href="/clear-slot/0" class="btn btn-danger btn-sm">Remove</a>
                 </div>
                 <!-- Show if slot doens't have a sensor attached -->
                 <div class="card-body" th:if="${!slot.hasAttachedSensor()}">
                     <p id="empty-slot-description" class="card-text">Nessun sensore presente in questa porta</p>
-                    <a id="action-connect-sensor" href="/slots/_id/connect.html"
+                    <a th:id="'action-connect-sensor-'+${slot.slot}" id="action-connect-sensor" href="/slots/_id/connect.html"
                         th:href="'/slots/' + ${slot.slot} + '/connect'" class="btn btn-primary btn-sm">Collega</a>
                 </div>
             </div>

@@ -46,7 +46,7 @@
                     <div class="col-md-auto">
                         <!-- Call controller to connect {sensor} to {slot} -->
                         <a href="/slots/_id/connect/_sid"
-                            th:href="'/slots/' + ${slot} + '/connect/' + ${sensor.modelName}" id="select-sensor"
+                            th:href="'/slots/' + ${slot} + '/connect/' + ${sensor.modelName}" th:id="'select-sensor-'+${sensor.modelName}" id="select-sensor"
                             class="btn btn-primary">
                             Seleziona
                         </a>
