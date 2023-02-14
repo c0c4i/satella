@@ -61,8 +61,8 @@ public class SensorService {
 
         } catch (IOException e) {
             // TODO
+            return new ArrayList<>();
         }
-        return new ArrayList<>();
     }
 
     /**

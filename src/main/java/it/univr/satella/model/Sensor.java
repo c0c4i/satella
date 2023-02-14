@@ -11,7 +11,7 @@ import jakarta.persistence.Id;
 public class Sensor {
 
     @Id
-    @JsonProperty
+    @JsonProperty("model")
     private String modelName;
 
     @JsonProperty("min_voltage")
