@@ -45,7 +45,7 @@ public class SensorService {
      * Inserts in the repository all descriptors
      * in the sensors.json file
      */
-    public void loadSensors(String filepath) {
+    public boolean loadSensors(String filepath) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Sensor[] sensors = mapper.readValue(
@@ -58,8 +58,9 @@ public class SensorService {
                     sensorRepository.save(sensor);
 
         } catch (IOException e) {
-            // TODO
+            return false;
         }
+        return true;
     }
 
     /**

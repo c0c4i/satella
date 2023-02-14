@@ -61,8 +61,8 @@ public class SlotServiceTest {
         Slot slot0 = new Slot(0, new SlotCapabilities(5.0f, 2.0f));
         slotService.setSlot(0, slot0);
 
-        slotService.attachSensorToSlot(0,
-                new Sensor("sensor", 0.0f, 10.0f, 0.0f, 10.0f));
+        assertTrue(slotService.attachSensorToSlot(0,
+                new Sensor("sensor", 0.0f, 10.0f, 0.0f, 10.0f)));
 
         // We should have added the sensor to slot 0
         List<Slot> slots = slotService.getSlots();
@@ -71,17 +71,35 @@ public class SlotServiceTest {
     }
 
     @Test
-    @Disabled
+    public void shouldNotAttachSensorToSlotBecauseNoId() {
+        Sensor sensor = new Sensor("sensor", 0.0f, 0.0f, 0.0f, 0.0f);
+        assertFalse(slotService.attachSensorToSlot(0, sensor));
+    }
+
+    @Test
+    public void shouldNotAttachSensorToSlotBecauseNotCompatible() {
+        Slot slot0 = new Slot(0, new SlotCapabilities(5.0f, 3.0f));
+        slotService.setSlot(0, slot0);
+        Sensor sensor = new Sensor("sensor", 0.0f, 0.0f, 0.0f, 0.0f);
+        assertFalse(slotService.attachSensorToSlot(0, sensor));
+    }
+
+    @Test
     public void shouldDetachSensorFromSlot() {
 
         Slot slot0 = new Slot(0, new SlotCapabilities(5.0f, 2.0f));
         slot0.attachSensor(new Sensor("sensor", 0.0f, 10.0f, 0.0f, 10.0f));
         slotService.setSlot(0, slot0);
 
-        slotService.detachSensorFromSlot(0);
+        assertTrue(slotService.detachSensorFromSlot(0));
 
         // We should have removed the sensor to slot 0
         List<Slot> slots = slotService.getSlots();
         assertFalse(slots.get(0).hasAttachedSensor());
+    }
+
+    @Test
+    public void shouldNotDetachSensorFromSlotBecauseNoId() {
+        assertFalse(slotService.detachSensorFromSlot(0));
     }
 }

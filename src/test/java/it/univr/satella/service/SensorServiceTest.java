@@ -52,7 +52,8 @@ public class SensorServiceTest {
 
     @Test
     public void shouldReadSensors() {
-        sensorService.loadSensors("src/test/resources/sensors.json");
+        assertTrue(sensorService.loadSensors("src/test/resources/sensors.json"));
+
         List<Sensor> sensorList = sensorRepository.findAll();
         assertEquals(2, sensorList.size());
 
@@ -62,7 +63,7 @@ public class SensorServiceTest {
 
     @Test
     public void shouldNotReadSensors() {
-        sensorService.loadSensors("src/test/resources/invalid.json");
+        assertFalse(sensorService.loadSensors("src/test/resources/invalid.json"));
         List<Sensor> sensorList = sensorRepository.findAll();
         assertEquals(0, sensorList.size());
     }
