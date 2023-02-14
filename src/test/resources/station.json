@@ -1,12 +1,10 @@
-{
-  "slots": [
-    {
-      "voltage" : 5.0,
-      "amperage": 2.0
-    },
-    {
-      "voltage" : 3.0,
-      "amperage": 2.0
-    }
-  ]
-}
+[
+  {
+    "voltage" : 5.0,
+    "amperage": 2.0
+  },
+  {
+    "voltage" : 3.0,
+    "amperage": 2.0
+  }
+]
