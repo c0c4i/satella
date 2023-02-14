@@ -23,20 +23,22 @@
         </div>
 
         <!-- Show error if present -->
-        <div th:if="${error != null}" th:text="${error}" class="alert alert-danger" th:id="'alert-error-' + ${errorType}" role="alert">
+        <div th:if="${error != null}" th:text="${error}" class="alert alert-danger"
+            th:id="'alert-error-' + ${errorType}" role="alert">
             Questo è un errore di validazione nel form!
         </div>
 
         <!-- Show success message if present -->
         <div th:if="${success != null}">
-            <div class="alert alert-success" th:id="'alert-success-' + ${successType}" th:text="${success}" role="alert">
+            <div class="alert alert-success" th:id="'alert-success-' + ${successType}" th:text="${success}"
+                role="alert">
                 Esempio di messaggio di successo!
             </div>
         </div>
 
         <!-- List of all slots with details of connected sensor -->
         <div class="card my-2" th:each="slot : ${slots}" th:id="'slot-card-' + ${slot.slot}">
-            <h5 id="slot-number" class="card-header" th:text="'S' + ${slot.slot}" >
+            <h5 id="slot-number" class="card-header" th:text="'S' + ${slot.slot}">
                 S1
             </h5>
             <!-- Show if slot have a sensor attached -->
@@ -47,7 +49,7 @@
 
                 <ul class="list-group list-group-horizontal my-2" id="sensor-specs">
                     <li id="ampere-specs" class="list-group-item">
-                        <b>Ampere</b>
+                        <b>Amperaggio</b>
                         <i th:text="${slot.attachedSensor.minAmperage}">2.00</i>
                         ~
                         <i th:text="${slot.attachedSensor.maxAmperage}">4.00</i>
@@ -59,7 +61,8 @@
                         <i th:text="${slot.attachedSensor.maxVoltage}">8.00</i>
                     </li>
                 </ul>
-                <a id="action-remove-sensor" href="/slots/_id/disconnect" th:href="'/slots/' + ${slot.slot} + '/disconnect'" class="btn btn-danger btn-sm">Disconetti</a>
+                <a id="action-remove-sensor" href="/slots/_id/disconnect"
+                    th:href="'/slots/' + ${slot.slot} + '/disconnect'" class="btn btn-danger btn-sm">Disconetti</a>
             </div>
             <!-- Show if slot doens't have a sensor attached -->
             <div class="card-body" th:if="${!slot.hasAttachedSensor()}">

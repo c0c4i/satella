@@ -25,26 +25,30 @@
             Questo è un errore di validazione nel form!
         </div>
 
-        <form action="/sensors/new/send" class="row g-3">
+        <form th:action="@{/sensors/new/send}" th:object="${form}" class="row g-3" method="post">
             <div class="col-12">
-                <label for="model" class="form-label">Model</label>
-                <input type="text" class="form-control" id="model-name" name="model-name" th:value="${modelName}">
+                <label for="modelName" class="form-label">Model</label>
+                <input type="text" class="form-control" id="modelName" name="modelName" th:field="*{modelName}">
             </div>
             <div class="col-md-6">
-                <label for="ampere-min" class="form-label">Ampere minimo</label>
-                <input type="text" class="form-control" id="ampere-min" name="ampere-min" th:value="${ampereMin}">
+                <label for="minAmperage" class="form-label">Amperaggio minimo</label>
+                <input type="number" step="any" class="form-control" id="minAmperage" name="minAmperage"
+                    th:field="*{minAmperage}">
             </div>
             <div class="col-md-6">
-                <label for="ampere-max" class="form-label">Ampere massimo</label>
-                <input type="text" class="form-control" id="ampere-max" name="ampere-max" th:value="${ampereMax}">
+                <label for="maxAmperage" class="form-label">Amperaggio massimo</label>
+                <input type="number" step="any" class="form-control" id="maxAmperage" name="maxAmperage"
+                    th:field="*{maxAmperage}">
             </div>
             <div class="col-md-6">
-                <label for="voltage-min" class="form-label">Voltaggio minimo</label>
-                <input type="text" class="form-control" id="voltage-min" name="voltage-min" th:value="${voltageMin}">
+                <label for="minVoltage" class="form-label">Voltaggio minimo</label>
+                <input type="number" step="any" class="form-control" id="minVoltage" name="minVoltage"
+                    th:field="*{minVoltage}">
             </div>
             <div class="col-md-6">
-                <label for="voltage-max" class="form-label">Voltaggio massimo</label>
-                <input type="text" class="form-control" id="voltage-max" name="voltage-max" th:value="${voltageMax}">
+                <label for="maxVoltage" class="form-label">Voltaggio massimo</label>
+                <input type="number" step="any" class="form-control" id="maxVoltage" name="maxVoltage"
+                    th:field="*{maxVoltage}">
             </div>
             <div class="row my-2">
                 <div class="col"></div>
