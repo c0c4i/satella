@@ -22,50 +22,47 @@
             </div>
         </div>
 
-        <!-- <div id="list">
-            <div th:each="item : ${data}">
-                <div>
-                    <h2>
-                        <span th:text="${item.sensor.descriptor.model}" />
-                    </h2>
-                    <span th:text="${item.labels}" />
-                </div>
-            </div>
-        </div> -->
-
-        <!-- TODO List of all slots with details of connected sensor -->
-
-        <!-- Example of slot with sensor -->
-        <div id="slot-card-{id}" class="card my-2">
-            <h5 id="slot-number" class="card-header">
-                S1
-            </h5>
-            <div class="card-body">
-                <h6 id="sensor-model" class="card-title">drok-temperature-mk1</h6>
-
-                <ul class="list-group list-group-horizontal my-2" id="sensor-specs">
-                    <li id="ampere-specs" class="list-group-item">
-                        <b>Ampere</b> 2.00 ~ 4.00
-                    </li>
-                    <li id="voltage-specs" class="list-group-item">
-                        <b>Voltage</b> 1.00 ~ 8.00
-                    </li>
-                </ul>
-                <!--                <a id="action-remove-sensor" href="/clear-slot/0" th:href="'clear-slot/' + ${slot.id}"-->
-                <!--                    class="btn btn-danger btn-sm">Remove</a>-->
-                <a id="action-remove-sensor" href="/clear-slot/0" class="btn btn-danger btn-sm">Remove</a>
+        <!-- Show if slots is empty (es. configuration file not found) -->
+        <div th:if="${slots.size() == 0}">
+            <div class="alert alert-warning" id="no-sensors-available" role="alert">
+                Nessun sensore disponibile!
             </div>
         </div>
 
-        <!-- Example of empty slot -->
-        <div class="card my-2">
-            <h5 id="slot-number" class="card-header">
-                S2
-            </h5>
-            <div class="card-body">
-                <p id="empty-slot-description" class="card-text">Nessun sensore presente in questa porta</p>
-                <a id="action-connect-sensor" href="/slots/_id/connect.html"
-                    th:href="'/slots/' + ${slot.id} + '/connect'" class="btn btn-primary btn-sm">Collega</a>
+        <!-- List of all slots with details of connected sensor -->
+        <div th:if="${slots.size() > 0}">
+            <div id="slot-card-{id}" class="card my-2" th:each="slot : ${slots}">
+                <h5 id="slot-number" class="card-header" th:text="'S' + ${slot.slot}">
+                    S1
+                </h5>
+                <!-- Show if slot have a sensor attached -->
+                <div class="card-body" th:if="${slot.hasAttachedSensor()}">
+                    <h6 id="sensor-model" class="card-title" th:text="${slot.getAttachedSensor().getModelName()}">
+                        drok-temperature-mk1
+                    </h6>
+
+                    <ul class="list-group list-group-horizontal my-2" id="sensor-specs">
+                        <li id="ampere-specs" class="list-group-item">
+                            <b>Ampere</b>
+                            <i th:text="slot.attachedSensor.minAmperage">2.00</i>
+                            ~
+                            <i th:text="slot.attachedSensor.maxAmperage">4.00</i>
+                        </li>
+                        <li id="voltage-specs" class="list-group-item">
+                            <b>Voltage</b>
+                            <i th:text="slot.attachedSensor.minVoltage">1.00</i>
+                            ~
+                            <i th:text="slot.attachedSensor.maxVoltage">8.00</i>
+                        </li>
+                    </ul>
+                    <a id="action-remove-sensor" href="/clear-slot/0" class="btn btn-danger btn-sm">Remove</a>
+                </div>
+                <!-- Show if slot doens't have a sensor attached -->
+                <div class="card-body" th:if="${!slot.hasAttachedSensor()}">
+                    <p id="empty-slot-description" class="card-text">Nessun sensore presente in questa porta</p>
+                    <a id="action-connect-sensor" href="/slots/_id/connect.html"
+                        th:href="'/slots/' + ${slot.slot} + '/connect'" class="btn btn-primary btn-sm">Collega</a>
+                </div>
             </div>
         </div>
     </div>

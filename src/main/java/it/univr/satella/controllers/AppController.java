@@ -1,7 +1,7 @@
 package it.univr.satella.controllers;
 
-import it.univr.satella.sensors.SensorBundle;
-import it.univr.satella.station.StationManager;
+import it.univr.satella.service.SensorService;
+import it.univr.satella.service.SlotService;
 import it.univr.satella.station.exceptions.SensorByIdNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,10 +17,14 @@ import java.util.*;
 public class AppController {
 
     @Autowired
-    private StationManager stationManager;
+    private SensorService sensorService;
+
+    @Autowired
+    private SlotService slotService;
 
     @RequestMapping("/slots")
     public String slots(Model model){
+        model.addAttribute("slots", slotService.getSlots());
         return "slots/index";
     }
 

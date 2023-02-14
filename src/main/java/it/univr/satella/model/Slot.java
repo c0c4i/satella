@@ -22,6 +22,10 @@ public class Slot {
         this.slot = slot;
     }
 
+    public int getSlot() {
+        return slot;
+    }
+
     public SlotCapabilities getCapabilities() {
         return slotCapabilities;
     }
