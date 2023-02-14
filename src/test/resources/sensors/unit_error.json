@@ -1,8 +1,0 @@
-[
-  {
-    "model": "sensor-1",
-    "vendor": "vendor-1",
-    "measure_unit": "Error",
-    "driver": "driver[0.0.1]"
-  }
-]

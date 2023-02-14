@@ -1,0 +1,8 @@
+- [x] `/sensor/{id}` Pagina dove vedere le informazioni del sensore con nome, range di amperaggio e voltaggio
+- [x]  `/sensor/{id}/range` Pagina per modificare i range di un sensore
+- [x] `/` Pagina per vedere tutti gli slot della stazione con `slot`, `voltage`, `ampere` e `sensor.name`
+	- [x] Possibilità di rimuovere un sensore
+	- [x] Assegnare un sensore ad una porta
+- [ ] `/sensors` Pagina per vedere tutti i sensori conosciuti
+	- [x] Poter aggiunere un nuovo sensore
+	- [x] Poter rimuovere un sensore
