@@ -36,8 +36,8 @@ public class SlotListPage extends PageObject {
                 .getText().equals(sensorModel);
     }
 
-    public SensorSelectPage clickDetachSensor(int slot) {
+    public SlotListPage clickDetachSensor(int slot) {
         driver.findElement(By.id("action-remove-sensor-" + slot)).click();
-        return new SensorSelectPage(driver);
+        return new SlotListPage(driver);
     }
 }

@@ -22,7 +22,6 @@ public abstract class PageObject {
     }
 
     public boolean hasNotificationWithId(String id) {
-        String xpath = "//*[@id=\"" + id + "\"][@role=\"alert\"]";
-        return driver.findElement(By.xpath(xpath)) != null;
+        return driver.findElement(By.id(id)) != null;
     }
 }

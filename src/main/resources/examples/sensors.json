@@ -12,5 +12,12 @@
     "max_voltage": 8.0,
     "min_amperage": 2.0,
     "max_amperage": 4.0
+  },
+  {
+    "model": "sensor-3",
+    "min_voltage": 10.0,
+    "max_voltage": 80.0,
+    "min_amperage": 20.0,
+    "max_amperage": 40.0
   }
 ]

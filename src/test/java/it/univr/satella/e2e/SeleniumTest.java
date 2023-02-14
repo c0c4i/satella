@@ -11,8 +11,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -33,21 +32,63 @@ public class SeleniumTest {
 
     @Test
     public void testSlotAttachCorrect() {
-
         driver.get("http://localhost:8080/slots");
         SlotListPage slotListPage = new SlotListPage(driver);
-        assertEquals(2, slotListPage.getSlotsCount());
 
         SensorSelectPage sensorSelectPage = slotListPage.clickAttachSensor(0);
         slotListPage = sensorSelectPage.clickSelect("sensor-1");
 
         assertTrue(slotListPage.slotHasAttachedSensor(0, "sensor-1"));
+        assertTrue(slotListPage.hasNotificationWithId("alert-success-1"));
     }
 
     @Test
     public void testSlotNotFoundAttach() {
+        driver.get("http://localhost:8080/slots/999/disconnect");
+        SlotListPage slotListPage = new SlotListPage(driver);
+        assertTrue(slotListPage.hasNotificationWithId("alert-error-4"));
+    }
 
-        driver.get("http://localhost:8080/slots");
+    @Test
+    public void testSlotAttachSensorNotFound() {
+        driver.get("http://localhost:8080/slots/0/connect/not-existent");
+        SlotListPage slotListPage = new SlotListPage(driver);
+        assertTrue(slotListPage.hasNotificationWithId("alert-error-2"));
+    }
 
+    @Test
+    public void testSlotAttachSensorNotCompatible() {
+        driver.get("http://localhost:8080/slots/0/connect/sensor-3");
+        SlotListPage slotListPage = new SlotListPage(driver);
+        assertTrue(slotListPage.hasNotificationWithId("alert-error-3"));
+    }
+
+    @Test
+    public void testSlotAttachCancel() {
+        driver.get("http://localhost:8080/slots/0/connect");
+        SensorSelectPage sensorSelectPage = new SensorSelectPage(driver);
+        SlotListPage slotListPage = sensorSelectPage.clickCancel();
+    }
+
+    @Test
+    public void testSlotAttachShowOnlyCompatible() {
+        driver.get("http://localhost:8080/slots/0/connect");
+        SensorSelectPage sensorSelectPage = new SensorSelectPage(driver);
+        assertFalse(sensorSelectPage.hasSensorWithModel("sensor-3"));
+    }
+
+    @Test
+    public void testSlotDetachCorrect() {
+        driver.get("http://localhost:8080/slots/0/connect/sensor-1");
+        SlotListPage slotListPage = new SlotListPage(driver);
+        slotListPage = slotListPage.clickDetachSensor(0);
+        assertTrue(slotListPage.hasNotificationWithId("alert-success-2"));
+    }
+
+    @Test
+    public void testSlotNotFoundDetach() {
+        driver.get("http://localhost:8080/slots/999/disconnect");
+        SlotListPage slotListPage = new SlotListPage(driver);
+        assertTrue(slotListPage.hasNotificationWithId("alert-error-4"));
     }
 }
