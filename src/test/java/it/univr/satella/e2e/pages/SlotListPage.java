@@ -12,6 +12,9 @@ public class SlotListPage extends PageObject {
     @FindBy(xpath = "//*[@id=\"slot-number\"]")
     private List<WebElement> slotsList;
 
+    @FindBy(xpath = "/html/body/div/div[1]/div[2]/a")
+    private WebElement sensorListBtn;
+
     public SlotListPage(WebDriver driver) {
         super(driver);
     }
@@ -39,5 +42,10 @@ public class SlotListPage extends PageObject {
     public SlotListPage clickDetachSensor(int slot) {
         driver.findElement(By.id("action-remove-sensor-" + slot)).click();
         return new SlotListPage(driver);
+    }
+
+    public SensorListPage clickSensorList() {
+        sensorListBtn.click();
+        return new SensorListPage(driver);
     }
 }

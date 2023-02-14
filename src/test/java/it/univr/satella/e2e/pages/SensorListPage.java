@@ -12,8 +12,8 @@ public class SensorListPage extends PageObject {
     @FindBy(id = "action-new-sensor")
     private WebElement insertSensorBtn;
 
-    @FindBy(xpath = "/html/body/div/div[2]/div/div/div[1]/h4")
-    private List<WebElement> sensorsNames;
+    @FindBy(id = "action-all-slots")
+    private WebElement slotListBtn;
 
     public SensorListPage(WebDriver driver) {
         super(driver);
@@ -31,8 +31,12 @@ public class SensorListPage extends PageObject {
     }
 
     public boolean hasSensorWithModel(String sensorModel) {
-        return sensorsNames.stream().map(WebElement::getText)
-                .anyMatch(x -> x.equals(sensorModel));
+        return driver.findElements(By.id("sensor-name-" + sensorModel)) != null;
+    }
+
+    public SlotListPage clickSlotList() {
+        slotListBtn.click();
+        return new SlotListPage(driver);
     }
 
 }
