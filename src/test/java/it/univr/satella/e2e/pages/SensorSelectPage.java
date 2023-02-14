@@ -2,7 +2,6 @@ package it.univr.satella.e2e.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 public class SensorSelectPage extends PageObject {
 
@@ -16,8 +15,8 @@ public class SensorSelectPage extends PageObject {
                 .getText().equals("Seleziona un sensore");
     }
 
-    public SlotsViewPage clickSelect(String sensorModel) {
+    public SlotListPage clickSelect(String sensorModel) {
         driver.findElement(By.id("select-sensor-" + sensorModel)).click();
-        return new SlotsViewPage(driver);
+        return new SlotListPage(driver);
     }
 }

@@ -7,12 +7,12 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
-public class SlotsViewPage extends PageObject {
+public class SlotListPage extends PageObject {
 
     @FindBy(xpath = "//*[@id=\"slot-number\"]")
     private List<WebElement> slotsList;
 
-    public SlotsViewPage(WebDriver driver) {
+    public SlotListPage(WebDriver driver) {
         super(driver);
     }
 

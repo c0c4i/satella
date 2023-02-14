@@ -1,8 +1,8 @@
 package it.univr.satella.e2e;
 
 import it.univr.satella.e2e.pages.SensorSelectPage;
-import it.univr.satella.e2e.pages.SlotsViewPage;
-import org.junit.Before;
+import it.univr.satella.e2e.pages.SlotListPage;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,16 +26,28 @@ public class SeleniumTest {
         driver = new ChromeDriver();
     }
 
+    @AfterClass
+    public static void shutdownDriver() {
+        driver.close();
+    }
+
     @Test
     public void testSlotAttachCorrect() {
 
         driver.get("http://localhost:8080/slots");
-        SlotsViewPage slotsViewPage = new SlotsViewPage(driver);
-        assertEquals(2, slotsViewPage.getSlotsCount());
+        SlotListPage slotListPage = new SlotListPage(driver);
+        assertEquals(2, slotListPage.getSlotsCount());
 
-        SensorSelectPage sensorSelectPage = slotsViewPage.clickAttachSensor(0);
-        slotsViewPage = sensorSelectPage.clickSelect("sensor-1");
+        SensorSelectPage sensorSelectPage = slotListPage.clickAttachSensor(0);
+        slotListPage = sensorSelectPage.clickSelect("sensor-1");
 
-        assertTrue(slotsViewPage.slotHasAttachedSensor(0, "sensor-1"));
+        assertTrue(slotListPage.slotHasAttachedSensor(0, "sensor-1"));
+    }
+
+    @Test
+    public void testSlotNotFoundAttach() {
+
+        driver.get("http://localhost:8080/slots");
+
     }
 }
