@@ -72,4 +72,16 @@ public class SensorService {
                 .filter(x -> x.isCompatible(capabilities))
                 .toList();
     }
+
+    public Sensor findSensorByModelName(String modelName) {
+        return sensorRepository.findByModelName(modelName);
+    }
+
+    public List<Sensor> findAll() {
+        return sensorRepository.findAll();
+    }
+
+    public void addSensor(Sensor sensor) {
+         sensorRepository.save(sensor);
+    }
 }

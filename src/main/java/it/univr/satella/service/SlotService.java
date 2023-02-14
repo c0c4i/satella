@@ -67,6 +67,10 @@ public class SlotService {
         return slots.values().stream().toList();
     }
 
+    public Slot getSlotByPort(int port) {
+        return slots.get(port);
+    }
+
     /**
      * Manually set a slot
      */

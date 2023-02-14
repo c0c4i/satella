@@ -24,34 +24,31 @@
             "Ampere minimo" deve essere inferiore ad "Ampere massimo"
         </div>
 
-        <form class="row g-3">
+        <form action="/sensors/new/send" class="row g-3">
             <div class="col-12">
                 <label for="model" class="form-label">Model</label>
-                <input type="text" class="form-control" id="model-input">
+                <input type="text" class="form-control" id="model-name" name="model-name"
+                    th:value="${param.model-name}">
             </div>
             <div class="col-md-6">
                 <label for="ampere-min" class="form-label">Ampere minimo</label>
-                <input type="text" class="form-control" id="ampere-min">
+                <input type="text" class="form-control" id="ampere-min" name="ampere-min"
+                    th:value="${param.ampere-min}">
             </div>
             <div class="col-md-6">
                 <label for="ampere-max" class="form-label">Ampere massimo</label>
-                <input type="text" class="form-control" id="ampere-max">
+                <input type="text" class="form-control" id="ampere-max" name="ampere-max"
+                    th:value="${param.ampere-max}">
             </div>
             <div class="col-md-6">
                 <label for="voltage-min" class="form-label">Voltaggio minimo</label>
-                <input type="text" class="form-control" id="voltage-min">
+                <input type="text" class="form-control" id="voltage-min" name="voltage-min"
+                    th:value="${param.voltage-min}">
             </div>
             <div class="col-md-6">
                 <label for="voltage-max" class="form-label">Voltaggio massimo</label>
-                <input type="text" class="form-control" id="voltage-max">
-            </div>
-            <div class="col-md-6">
-                <label for="range-min" class="form-label">Range minimo</label>
-                <input type="text" class="form-control" id="range-min">
-            </div>
-            <div class="col-md-6">
-                <label for="range-max" class="form-label">Range massimo</label>
-                <input type="text" class="form-control" id="range-max">
+                <input type="text" class="form-control" id="voltage-max" name="voltage-max"
+                    th:value="${param.voltage-max}">
             </div>
             <div class="row my-2">
                 <div class="col"></div>

@@ -24,10 +24,32 @@
 
         <!-- Show if slots is empty (es. configuration file not found) -->
         <div th:if="${slots.size() == 0}">
-            <div class="alert alert-warning" id="no-sensors-available" role="alert">
+            <div class="alert alert-warning" id="alert-no-sensors-available" role="alert">
                 Nessun sensore disponibile!
             </div>
         </div>
+
+        <div th:if="${#strings.toString(param.error) == '1'}" class="alert alert-danger" role="alert"
+            id="alert-error-slot-not-found">
+            Lo slot selezionato non esiste!
+        </div>
+
+        <div th:if="${#strings.toString(param.error) == '2'}" class="alert alert-danger" role="alert"
+            id="alert-error-sensor-not-found">
+            Il sensore selezionato non esiste!
+        </div>
+
+        <div th:if="${#strings.toString(param.error) == '3'}" class="alert alert-danger" role="alert"
+            id="alert-error-slot-not-compatible">
+            Lo slot non supporta il sensore!
+        </div>
+
+        <div th:if="${#strings.toString(param.success) == '1'}">
+            <div class="alert alert-success" id="alert-sensor-connect-success" role="alert">
+                Sensore collegato con successo!
+            </div>
+        </div>
+
 
         <!-- List of all slots with details of connected sensor -->
         <div th:if="${slots.size() > 0}">
@@ -44,15 +66,15 @@
                     <ul class="list-group list-group-horizontal my-2" id="sensor-specs">
                         <li id="ampere-specs" class="list-group-item">
                             <b>Ampere</b>
-                            <i th:text="slot.attachedSensor.minAmperage">2.00</i>
+                            <i th:text="${slot.attachedSensor.minAmperage}">2.00</i>
                             ~
-                            <i th:text="slot.attachedSensor.maxAmperage">4.00</i>
+                            <i th:text="${slot.attachedSensor.maxAmperage}">4.00</i>
                         </li>
                         <li id="voltage-specs" class="list-group-item">
                             <b>Voltage</b>
-                            <i th:text="slot.attachedSensor.minVoltage">1.00</i>
+                            <i th:text="${slot.attachedSensor.minVoltage}">1.00</i>
                             ~
-                            <i th:text="slot.attachedSensor.maxVoltage">8.00</i>
+                            <i th:text="${slot.attachedSensor.maxVoltage}">8.00</i>
                         </li>
                     </ul>
                     <a id="action-remove-sensor" href="/clear-slot/0" class="btn btn-danger btn-sm">Remove</a>

@@ -1,5 +1,7 @@
 package it.univr.satella.controllers;
 
+import it.univr.satella.model.Sensor;
+import it.univr.satella.model.Slot;
 import it.univr.satella.service.SensorService;
 import it.univr.satella.service.SlotService;
 import it.univr.satella.station.exceptions.SensorByIdNotFoundException;
@@ -30,6 +32,12 @@ public class AppController {
 
     @RequestMapping("/sensors")
     public String sensors(Model model){
+        List<Sensor> sensors = sensorService.findAll();
+        if(sensors.size() == 0) {
+            return "sensors/empty";
+        }
+
+        model.addAttribute("sensors", sensorService.findAll());
         return "sensors/index";
     }
 
