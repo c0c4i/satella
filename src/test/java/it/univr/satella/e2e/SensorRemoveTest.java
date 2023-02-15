@@ -3,12 +3,16 @@ package it.univr.satella.e2e;
 import it.univr.satella.e2e.pages.ModifySensorPage;
 import it.univr.satella.e2e.pages.SensorListPage;
 import it.univr.satella.e2e.pages.SlotListPage;
+import it.univr.satella.service.SensorService;
+import it.univr.satella.service.SlotService;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -26,6 +30,9 @@ public class SensorRemoveTest {
 
     private static WebDriver driver;
 
+    @Autowired private SensorService sensorService;
+    @Autowired private SlotService slotService;
+
     @BeforeClass
     public static void initializeDriver() {
         System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriver_win32_110/chromedriver.exe");
@@ -35,6 +42,12 @@ public class SensorRemoveTest {
     @AfterClass
     public static void shutdownDriver() {
         driver.close();
+    }
+
+    @Before
+    public void setUp() {
+        sensorService.loadSensorsAtDefaultPath();
+        slotService.loadSlotsAtDefaultPath();
     }
 
     @Test
@@ -54,5 +67,19 @@ public class SensorRemoveTest {
         SensorListPage sensorListPage = new SensorListPage(driver);
         assertTrue(sensorListPage.isCurrentPage());
         assertTrue(sensorListPage.hasNotificationWithId("alert-error-1"));
+    }
+
+    @Test
+    public void testSensorRemoveCorrectNotAttached() {
+
+        driver.get("http://localhost:8080/sensors/sensor-1");
+        ModifySensorPage modifySensorPage = new ModifySensorPage(driver, "sensor-1");
+        assertTrue(modifySensorPage.isCurrentPage());
+
+        SensorListPage sensorListPage = modifySensorPage.clickDelete();
+        assertTrue(sensorListPage.isCurrentPage());
+
+        assertTrue(sensorListPage.hasNotificationWithId("alert-sensor-connect-success-2"));
+        assertFalse(sensorListPage.hasSensorWithModel("sensor-1"));
     }
 }

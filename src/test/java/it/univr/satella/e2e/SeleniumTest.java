@@ -21,11 +21,13 @@ import static org.junit.Assert.*;
 @Suite.SuiteClasses({
         SlotAttachTest.class,
         SlotDetachTest.class,
+        SlotEmptyTest.class,
         SensorViewTest.class,
         SensorInsertTest.class,
         SensorModifyTest.class,
-        SensorRemoveSimpleTest.class,
-        SensorRemoveTest.class
+        SensorRemoveTest.class,
+        SensorEmptyTest.class,
+        SlotViewTest.class
 })
 public class SeleniumTest {
 }
