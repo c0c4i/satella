@@ -3,7 +3,6 @@ package it.univr.satella.e2e;
 import it.univr.satella.e2e.pages.SensorSelectPage;
 import it.univr.satella.e2e.pages.SlotListPage;
 import it.univr.satella.model.SensorTest;
-import it.univr.satella.repository.SensorRepositoryTest;
 import it.univr.satella.service.SensorServiceTest;
 import it.univr.satella.service.SlotServiceTest;
 import org.junit.AfterClass;
@@ -24,7 +23,8 @@ import static org.junit.Assert.*;
         SlotDetachTest.class,
         SensorViewTest.class,
         SensorInsertTest.class,
-        SensorModifyTest.class
+        SensorModifyTest.class,
+        SensorRemoveTest.class
 })
 public class SeleniumTest {
 }
