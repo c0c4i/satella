@@ -115,4 +115,18 @@ public class SlotService {
         }
         return false;
     }
+
+    public void removeSensorFromSlots(Sensor sensor) {
+        List<Slot> result = slots.values().stream().filter(slot -> {
+            Sensor attached = slot.getAttachedSensor();
+            if(attached == null) return false;
+            return attached.getModelName().equals(sensor.getModelName());
+        }).toList();
+
+        if(result.size() == 0) return;
+
+        for (Slot slot: result) {
+            slot.detachSensor();
+        }
+    }
 }
