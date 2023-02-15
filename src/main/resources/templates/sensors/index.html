@@ -25,6 +25,13 @@
             </div>
         </div>
 
+        <!-- Show error if present -->
+        <div th:if="${error != null}" th:text="${error}" class="alert alert-danger"
+             th:id="'alert-error-' + ${errorType}" role="alert">
+            Questo è un errore generico!
+        </div>
+
+        <!-- Show success message if present -->
         <div th:if="${success != null}">
             <div class="alert alert-success" th:id="'alert-sensor-connect-success-' + ${successType}"
                 th:text="${success}" role="alert">
