@@ -35,8 +35,11 @@ public class SlotListPage extends PageObject {
     }
 
     public boolean slotHasAttachedSensor(int slot, String sensorModel) {
-        return driver.findElement(By.id("sensor-model-" + slot))
-                .getText().equals(sensorModel);
+        List<WebElement> elements = driver.findElements(By.id("sensor-model-" + slot));
+        if (!elements.isEmpty()) {
+            return elements.get(0).getText().equals(sensorModel);
+        }
+        return false;
     }
 
     public SlotListPage clickDetachSensor(int slot) {

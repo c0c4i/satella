@@ -31,7 +31,7 @@ public class SensorListPage extends PageObject {
     }
 
     public boolean hasSensorWithModel(String sensorModel) {
-        return driver.findElements(By.id("sensor-name-" + sensorModel)) != null;
+        return driver.findElements(By.id("sensor-name-" + sensorModel)).size() != 0;
     }
 
     public SlotListPage clickSlotList() {

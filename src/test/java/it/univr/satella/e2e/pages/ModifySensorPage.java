@@ -13,6 +13,9 @@ public class ModifySensorPage extends SensorPage {
     @FindBy(id = "action-cancel")
     private WebElement cancelBtn;
 
+    @FindBy(id = "action-delete")
+    private WebElement deleteBtn;
+
     private String sensorModel;
 
     public ModifySensorPage(WebDriver driver, String sensorModel) {
@@ -33,6 +36,11 @@ public class ModifySensorPage extends SensorPage {
 
     public SensorListPage clickCancel() {
         cancelBtn.click();
+        return new SensorListPage(driver);
+    }
+
+    public SensorListPage clickDelete() {
+        deleteBtn.click();
         return new SensorListPage(driver);
     }
 }
