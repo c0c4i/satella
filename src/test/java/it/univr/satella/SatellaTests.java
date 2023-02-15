@@ -1,5 +1,6 @@
 package it.univr.satella;
 
+import it.univr.satella.e2e.*;
 import it.univr.satella.model.SensorTest;
 import it.univr.satella.repository.SensorRepositoryTest;
 import it.univr.satella.service.SensorServiceTest;
