@@ -63,10 +63,10 @@ public class SlotService {
     public List<Slot> getSlots() {
         return slots.values().stream().toList();
     }
+
     public Slot getSlotByPort(int port) {
         return slots.get(port);
     }
-
 
     public SlotCapabilities getSlotCapabilitiesFromSensor(Sensor sensor) {
         List<Slot> result = slots.values().stream().filter(slot -> {
