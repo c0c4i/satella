@@ -6,7 +6,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import static org.junit.Assert.assertTrue;
 
-public abstract class PageObject {
+public class PageObject {
 
     protected WebDriver driver;
 

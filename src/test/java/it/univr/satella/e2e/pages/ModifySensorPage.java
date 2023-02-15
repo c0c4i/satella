@@ -1,31 +1,33 @@
 package it.univr.satella.e2e.pages;
 
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class InsertSensorPage extends SensorPage {
+public class ModifySensorPage extends SensorPage {
 
     @FindBy(id = "action-create")
-    private WebElement insertBtn;
+    private WebElement modifyBtn;
 
     @FindBy(id = "action-cancel")
     private WebElement cancelBtn;
 
-    public InsertSensorPage(WebDriver driver) {
+    private String sensorModel;
+
+    public ModifySensorPage(WebDriver driver, String sensorModel) {
         super(driver);
+        this.sensorModel = sensorModel;
     }
 
     @Override
     public boolean isCurrentPage() {
         return driver.findElement(By.id("title"))
-                .getText().equals("Nuovo sensore");
+                .getText().equals(sensorModel);
     }
 
-    public SensorListPage clickInsert() {
-        insertBtn.click();
+    public SensorListPage clickModify() {
+        modifyBtn.click();
         return new SensorListPage(driver);
     }
 
