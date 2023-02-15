@@ -23,7 +23,8 @@ import static org.junit.Assert.*;
         SlotAttachTest.class,
         SlotDetachTest.class,
         SensorViewTest.class,
-        SensorInsertTest.class
+        SensorInsertTest.class,
+        SensorModifyTest.class
 })
 public class SeleniumTest {
 }
