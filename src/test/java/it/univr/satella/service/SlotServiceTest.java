@@ -49,6 +49,13 @@ public class SlotServiceTest {
     }
 
     @Test
+    public void shouldGetSlotByPort() {
+        Slot slot0 = new Slot(0, new SlotCapabilities(5.0f, 2.0f));
+        slotService.setSlot(0, slot0);
+        assertEquals(slot0, slotService.getSlotByPort(0));
+    }
+
+    @Test
     public void shouldNotLoadSlots() {
         slotService.loadSlots("src/test/resources/invalid.json");
         List<Slot> slots = slotService.getSlots();
@@ -101,5 +108,18 @@ public class SlotServiceTest {
     @Test
     public void shouldNotDetachSensorFromSlotBecauseNoId() {
         assertFalse(slotService.detachSensorFromSlot(0));
+    }
+
+    @Test
+    public void shouldGetSlotCapabilitiesFromSensor() {
+
+        Sensor sensor = new Sensor("sensor", 0.0f, 10.0f, 0.0f, 10.0f);
+        SlotCapabilities capabilities = new SlotCapabilities(5.0f, 2.0f);
+
+        Slot slot0 = new Slot(0, capabilities);
+        slot0.attachSensor(sensor);
+        slotService.setSlot(0, slot0);
+
+        assertEquals(capabilities, slotService.getSlotCapabilitiesFromSensor(sensor));
     }
 }

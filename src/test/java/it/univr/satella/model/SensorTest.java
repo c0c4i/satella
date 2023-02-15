@@ -44,4 +44,14 @@ public class SensorTest {
         Sensor sensor = new Sensor("sensor", 4.0f, 4.0f, 4.0f, 5.0f);
         assertNotEquals(-1, sensor.isCompatible(capabilities));
     }
+
+    @Test
+    public void shouldGet() {
+        Sensor sensor = new Sensor("sensor", 2.0f, 3.0f, 4.0f, 5.0f);
+        assertEquals("sensor", sensor.getModelName());
+        assertEquals(2.0f, sensor.getMinVoltage(), 0.0f);
+        assertEquals(3.0f, sensor.getMaxVoltage(), 0.0f);
+        assertEquals(4.0f, sensor.getMinAmperage(), 0.0f);
+        assertEquals(5.0f, sensor.getMaxAmperage(), 0.0f);
+    }
 }
