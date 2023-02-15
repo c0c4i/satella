@@ -81,4 +81,36 @@ public class SensorServiceTest {
         assertEquals(1, compatibleSensor.size());
         assertEquals("compatible", compatibleSensor.get(0).getModelName());
     }
+
+    @Test
+    public void shouldFindSensorByModel() {
+        sensorRepository.save(new Sensor("sensor", 0.0f, 10.0f, 0.0f, 10.0f));
+        assertNotNull(sensorService.findSensorByModelName("sensor"));
+    }
+
+    @Test
+    public void shouldNotFindSensorByModel() {
+        sensorRepository.save(new Sensor("sensor", 0.0f, 10.0f, 0.0f, 10.0f));
+        assertNull(sensorService.findSensorByModelName("sensor-1"));
+    }
+
+    @Test
+    public void shouldFindAll() {
+        sensorRepository.save(new Sensor("sensor", 0.0f, 10.0f, 0.0f, 10.0f));
+        assertEquals(sensorService.findAll().size(), 1);
+    }
+
+    @Test
+    public void shouldAddSensor() {
+        sensorService.addSensor(new Sensor("sensor", 0.0f, 10.0f, 0.0f, 10.0f));
+        assertEquals(sensorRepository.findAll().size(), 1);
+    }
+
+    @Test
+    public void shouldDeleteSensor() {
+        Sensor sensor = new Sensor("sensor", 0.0f, 10.0f, 0.0f, 10.0f);
+        sensorRepository.save(sensor);
+        sensorService.deleteSensor(sensor);
+        assertEquals(sensorRepository.findAll().size(), 0);
+    }
 }

@@ -4,7 +4,6 @@ import it.univr.satella.model.Sensor;
 import it.univr.satella.model.Slot;
 import it.univr.satella.service.SensorService;
 import it.univr.satella.service.SlotService;
-import it.univr.satella.station.exceptions.SensorByIdNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -43,7 +43,7 @@ public class ManageSensorController {
             int validate = sensor.isValid();
             if(validate != -1) {
                 attributes.addFlashAttribute("errorType", validate);
-                attributes.addFlashAttribute("error", sensor.getInvalidMessage(validate));
+                attributes.addFlashAttribute("error", Sensor.getInvalidMessage(validate));
                 attributes.addFlashAttribute("sensor", sensor);
                 return new RedirectView("/sensors/" + sensor.getModelName());
             }
@@ -53,7 +53,7 @@ public class ManageSensorController {
                 int compatible = sensor.isCompatible(slotCapabilities);
                 if (compatible != -1) {
                     attributes.addFlashAttribute("errorType", compatible);
-                    attributes.addFlashAttribute("error", sensor.getIncompatibleMessage(compatible, slotCapabilities));
+                    attributes.addFlashAttribute("error", Sensor.getIncompatibleMessage(compatible, slotCapabilities));
                     attributes.addFlashAttribute("sensor", sensor);
                     return new RedirectView("/sensors/" + sensor.getModelName());
                 }

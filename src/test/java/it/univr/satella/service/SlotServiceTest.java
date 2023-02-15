@@ -122,4 +122,22 @@ public class SlotServiceTest {
 
         assertEquals(capabilities, slotService.getSlotCapabilitiesFromSensor(sensor));
     }
+
+    @Test
+    public void shouldRemoveSensorFromSlots() {
+        Slot slot0 = new Slot(0, new SlotCapabilities(5.0f, 2.0f));
+        Slot slot1 = new Slot(1, new SlotCapabilities(2.0f, 8.0f));
+        Sensor sensor1 = new Sensor("sensor", 0.0f, 10.0f, 0.0f, 10.0f);
+        slot0.attachSensor(sensor1);
+        slot1.attachSensor(sensor1);
+        slotService.setSlot(0, slot0);
+        slotService.setSlot(1, slot1);
+
+        slotService.removeSensorFromSlots(sensor1);
+
+        SlotCapabilities capabilities = slotService.getSlotCapabilitiesFromSensor(sensor1);
+
+        // We should have no capabilities for this sensor
+        assertNull(capabilities);
+    }
 }
