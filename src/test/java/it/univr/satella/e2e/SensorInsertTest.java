@@ -3,6 +3,7 @@ package it.univr.satella.e2e;
 import it.univr.satella.e2e.pages.InsertSensorPage;
 import it.univr.satella.e2e.pages.SensorListPage;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;

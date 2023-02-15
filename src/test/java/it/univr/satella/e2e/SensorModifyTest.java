@@ -3,12 +3,17 @@ package it.univr.satella.e2e;
 import it.univr.satella.e2e.pages.ModifySensorPage;
 import it.univr.satella.e2e.pages.PageObject;
 import it.univr.satella.e2e.pages.SensorListPage;
+import it.univr.satella.model.Sensor;
+import it.univr.satella.service.SensorService;
+import it.univr.satella.service.SlotService;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -21,6 +26,9 @@ public class SensorModifyTest {
 
     private static WebDriver driver;
 
+    @Autowired private SensorService sensorService;
+    @Autowired private SlotService slotService;
+
     @BeforeClass
     public static void initializeDriver() {
         System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriver_win32_110/chromedriver.exe");
@@ -30,6 +38,12 @@ public class SensorModifyTest {
     @AfterClass
     public static void shutdownDriver() {
         driver.close();
+    }
+
+    @Before
+    public void setUp() {
+        sensorService.loadSensorsAtDefaultPath();
+        slotService.loadSlotsAtDefaultPath();
     }
 
     @Test
@@ -80,7 +94,9 @@ public class SensorModifyTest {
     @Test
     public void testSensorModifyNotCompatible() {
 
-        driver.get("http://localhost:8080/slots/0/connect/sensor-1");
+        Sensor sensor = sensorService.findSensorByModelName("sensor-1");
+        slotService.attachSensorToSlot(0, sensor);
+
         driver.get("http://localhost:8080/sensors/sensor-1");
         ModifySensorPage modifySensorPage = new ModifySensorPage(driver, "sensor-1");
         assertTrue(modifySensorPage.isCurrentPage());

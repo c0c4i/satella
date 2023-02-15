@@ -168,24 +168,27 @@ Di seguito riportiamo, per ciascuno scenario descritto in precedenza, gli E2E te
 
 ### 2.4 Visualizzare la libreria 
 
-| Test                     | Descrizione                                                  |
-| ------------------------ | ------------------------------------------------------------ |
-| **[testListSensors]**          | Controlla che la libreria contenga i dati di default presenti nella demo. |
+| Test                           | Descrizione                                                                          |
+|--------------------------------|--------------------------------------------------------------------------------------|
+| **[testListSensors]**          | Controlla che la libreria contenga i dati di default presenti nella demo.            |
 | **[testListSensorsGoToSlots]** | Controlla che sia possibile tornare alla pagina degli slot dalla pagina dei sensori. |
+| **[testListSensorsEmpty]**     | Controlla che sia visualizzata una notifica se non ci sono sensori.                  |
 
 [testListSensors]: https://github.com/c0c4i/satella/blob/dev/src/test/java/it/univr/satella/e2e/SensorViewTest.java#L34
 [testListSensorsGoToSlots]: https://github.com/c0c4i/satella/blob/dev/src/test/java/it/univr/satella/e2e/SensorViewTest.java#L48
 
 ### 3.1 Collegare uno slot ad un sensore
 
-| Test                              | Descrizione                                                  |
-| --------------------------------- | ------------------------------------------------------------ |
-| **[testSlotAttachCorrect]**             | Collega correttamente un sensore ad uno slot.                |
-| **[testSlotNotFoundAttach]**            | Prova a collegare un sensore ad uno slot non esistente.      |
-| **[testSlotAttachSensorNotFound]**      | Prova a collegare un sensore non esistente ad uno slot.      |
-| **[testSlotAttachSensorNotCompatible]** | Prova a collegare un sensore non compatibile ad uno slot.    |
-| **[testSlotAttachCancel]**              | Annulla l'operazione di collegamento.                        |
+| Test                                    | Descrizione                                                                          |
+|-----------------------------------------|--------------------------------------------------------------------------------------|
+| **[testSlotAttachCorrect]**             | Collega correttamente un sensore ad uno slot.                                        |
+| **[testSlotNotFoundAttach]**            | Prova a collegare un sensore ad uno slot non esistente.                              |
+| **[testSlotAttachSensorNotFound]**      | Prova a collegare un sensore non esistente ad uno slot.                              |
+| **[testSlotAttachSensorNotCompatible]** | Prova a collegare un sensore non compatibile ad uno slot.                            |
+| **[testSlotAttachCancel]**              | Annulla l'operazione di collegamento.                                                |
 | **[testSlotAttachShowOnlyCompatible]**  | Controlla che vengano visualizzati solo sensori compatibili con lo slot selezionato. |
+| **[testSlotAttachSensorsEmpty]**        | Controlla che venga visualizzata una notifica se non ci sono sensori compatibili.    |
+| **[testSlotEmpty]**                     | Controlla che sia visualizzata una notifica se non ci sono slot.                     |
 
 [testSlotAttachCorrect]: https://github.com/c0c4i/satella/blob/dev/src/test/java/it/univr/satella/e2e/SlotAttachTest.java#L35
 [testSlotNotFoundAttach]: https://github.com/c0c4i/satella/blob/dev/src/test/java/it/univr/satella/e2e/SlotAttachTest.java#L51
@@ -193,13 +196,14 @@ Di seguito riportiamo, per ciascuno scenario descritto in precedenza, gli E2E te
 [testSlotAttachSensorNotCompatible]: https://github.com/c0c4i/satella/blob/dev/src/test/java/it/univr/satella/e2e/SlotAttachTest.java#L69
 [testSlotAttachCancel]: https://github.com/c0c4i/satella/blob/dev/src/test/java/it/univr/satella/e2e/SlotAttachTest.java#L78
 [testSlotAttachShowOnlyCompatible]: https://github.com/c0c4i/satella/blob/dev/src/test/java/it/univr/satella/e2e/SlotAttachTest.java#L88
+[testSlotAttachSensorsEmpty]:
 
 ### 3.2 Scollegare uno slot ad un sensore
 
-| Test                   | Descrizione                                              |
-| ---------------------- | -------------------------------------------------------- |
-| **[testSlotDetachCorrect]**  | Scollega correttamente un sensore da uno slot.           |
-| **[testSlotNotFoundDetach]** | Prova a sccollegare un sensore da uno slot non esistente |
+| Test                   | Descrizione                                               |
+| ---------------------- |-----------------------------------------------------------|
+| **[testSlotDetachCorrect]**  | Scollega correttamente un sensore da uno slot.            |
+| **[testSlotNotFoundDetach]** | Prova a sccollegare un sensore da uno slot non esistente. |
 
 [testSlotDetachCorrect]: https://github.com/c0c4i/satella/blob/dev/src/test/java/it/univr/satella/e2e/SlotDetachTest.java#L33
 [testSlotNotFoundDetach]: https://github.com/c0c4i/satella/blob/dev/src/test/java/it/univr/satella/e2e/SlotDetachTest.java#L45

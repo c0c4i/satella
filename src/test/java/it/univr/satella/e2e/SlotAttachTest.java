@@ -1,13 +1,16 @@
 package it.univr.satella.e2e;
 
+import it.univr.satella.e2e.pages.PageObject;
 import it.univr.satella.e2e.pages.SensorSelectPage;
 import it.univr.satella.e2e.pages.SlotListPage;
+import it.univr.satella.service.SlotService;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -49,11 +52,16 @@ public class SlotAttachTest {
 
     @Test
     public void testSlotNotFoundAttach() {
-        driver.get("http://localhost:8080/slots/999/disconnect");
+        // Direct
+        driver.get("http://localhost:8080/slots/999/connect");
+        PageObject page = new PageObject(driver);
+        assertTrue(page.hasNotificationWithId("form-validation-error"));
+
+        // With redirect
+        driver.get("http://localhost:8080/slots/999/connect/sensor-1");
         SlotListPage slotListPage = new SlotListPage(driver);
         assertTrue(slotListPage.isCurrentPage());
-
-        assertTrue(slotListPage.hasNotificationWithId("alert-error-4"));
+        assertTrue(slotListPage.hasNotificationWithId("alert-error-1"));
     }
 
     @Test
@@ -91,5 +99,12 @@ public class SlotAttachTest {
         assertTrue(sensorSelectPage.isCurrentPage());
 
         assertFalse(sensorSelectPage.hasSensorWithModel("sensor-3"));
+    }
+
+    @Test
+    public void testSlotAttachSensorsEmpty() {
+        driver.get("http://localhost:8080/slots/2/connect");
+        PageObject page = new PageObject(driver);
+        assertTrue(page.hasNotificationWithId("no-sensors-available"));
     }
 }
