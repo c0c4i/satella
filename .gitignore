@@ -39,3 +39,8 @@ out/
 ### Obsidian ###
 .obsidian/*
 TO\ DO.md
+
+## drivers ##
+src/test/resources/drivers/chromedriver_linux64_110/*
+src/test/resources/drivers/chromedriver_mac64_110/*
+src/test/resources/drivers/chromedriver_win32_110/*
