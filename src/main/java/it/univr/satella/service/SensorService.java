@@ -54,7 +54,7 @@ public class SensorService {
             );
 
             for (Sensor sensor : sensors)
-                if (sensor.isValid())
+                if (sensor.isValid() == -1)
                     sensorRepository.save(sensor);
 
         } catch (IOException e) {
@@ -69,7 +69,7 @@ public class SensorService {
      */
     public List<Sensor> findAllCompatible(SlotCapabilities capabilities) {
         return sensorRepository.findAll().stream()
-                .filter(x -> x.isCompatible(capabilities))
+                .filter(x -> x.isCompatible(capabilities) == -1)
                 .toList();
     }
 

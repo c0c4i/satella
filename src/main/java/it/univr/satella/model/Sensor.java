@@ -26,7 +26,27 @@ public class Sensor {
     @JsonProperty("max_amperage")
     private float maxAmperage;
 
-    protected Sensor() { }
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public void setMinVoltage(float minVoltage) {
+        this.minVoltage = minVoltage;
+    }
+
+    public void setMaxVoltage(float maxVoltage) {
+        this.maxVoltage = maxVoltage;
+    }
+
+    public void setMinAmperage(float minAmperage) {
+        this.minAmperage = minAmperage;
+    }
+
+    public void setMaxAmperage(float maxAmperage) {
+        this.maxAmperage = maxAmperage;
+    }
+
+    public Sensor() { }
 
     /**
      * Constructs a new sensor descriptor
@@ -43,21 +63,61 @@ public class Sensor {
     /**
      * Checks that the descriptor is coherent
      */
-    public boolean isValid() {
-        boolean voltageCheck = minVoltage <= maxVoltage;
-        boolean amperageCheck = minAmperage <= maxAmperage;
-        boolean notNull = modelName != null;
-        return voltageCheck && amperageCheck && notNull;
+    public int isValid() {
+        if(modelName == null) return 1;
+        if(!checkStringWithoutSpaces(modelName)) return 2;
+        if(minVoltage > maxVoltage) return 3;
+        if(minAmperage > maxAmperage) return 4;
+        return -1;
     }
 
     /**
      * Return true if the slot is compatible with this
      * sensor
      */
-    public boolean isCompatible(SlotCapabilities capabilities) {
-        boolean amperageCheck = minAmperage <= capabilities.amperage && capabilities.amperage <= maxAmperage;
-        boolean voltageCheck  = minVoltage  <= capabilities.voltage  && capabilities.voltage  <= maxVoltage;
-        return amperageCheck && voltageCheck;
+    public int isCompatible(SlotCapabilities capabilities) {
+        if(minAmperage > capabilities.amperage) return 5;
+        if(maxAmperage < capabilities.amperage) return 6;
+        if(minVoltage > capabilities.voltage) return 7;
+        if(maxVoltage < capabilities.voltage) return 8;
+        return -1;
+    }
+
+    public String getInvalidMessage(int error) {
+        switch (error) {
+            case 1:
+                return "Il modello non può essere vuoto!";
+            case 2:
+                return "Il modello non può contenere spazi vuoti!";
+            case 3:
+                return "Il campo \"Amperaggio minimo\" deve essere inferiore al campo \"Amperaggio massimo\" ";
+            case 4:
+                return "Il \"Voltaggio minimo\" deve essere inferiore al \"Voltaggio massimo\" ";
+        }
+        return null;
+    }
+
+    public String getIncompatibleMessage(int error, SlotCapabilities capabilities) {
+        switch (error) {
+            case 5:
+                return "Il campo \"Amperaggio minimo\" deve inferiore o uguale alla capacità dello slot a cui è collegato (" + capabilities.amperage + "A)";
+            case 6:
+                return "Il campo \"Amperaggio massimo\" deve superiore o uguale alla capacità dello slot a cui è collegato (" + capabilities.amperage + "A)";
+            case 7:
+                return "Il \"Voltaggio minimo\" deve inferiore o uguale alla capacità dello slot a cui è collegato (" + capabilities.voltage + "V)";
+            case 8:
+                return "Il \"Voltaggio massimo\" deve superiore o uguale alla capacità dello slot a cui è collegato (" + capabilities.voltage + "V)";
+        }
+        return null;
+    }
+
+    private static boolean checkStringWithoutSpaces(String input) {
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) == ' ') {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
