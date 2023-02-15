@@ -41,7 +41,7 @@ public class NewSensorController {
             int validate = sensor.isValid();
             if(validate != -1) {
                 attributes.addFlashAttribute("errorType", validate);
-                attributes.addFlashAttribute("error", sensor.getInvalidMessage(validate));
+                attributes.addFlashAttribute("error", Sensor.getInvalidMessage(validate));
                 attributes.addFlashAttribute("sensor", sensor);
                 return new RedirectView("/sensors/new");
             }

@@ -67,7 +67,7 @@ public class SensorModifyTest {
         modifySensorPage.clickModify(); // We should remain in the same page
         assertTrue(modifySensorPage.isCurrentPage());
 
-        assertTrue(modifySensorPage.hasNotificationWithId("form-validation-error-4"));
+        assertTrue(modifySensorPage.hasNotificationWithId("form-validation-error-3"));
     }
 
     @Test

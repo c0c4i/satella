@@ -66,8 +66,8 @@ public class Sensor {
     public int isValid() {
         if(modelName == null) return 1;
         if(!checkStringWithoutSpaces(modelName)) return 2;
-        if(minVoltage > maxVoltage) return 3;
-        if(minAmperage > maxAmperage) return 4;
+        if(minAmperage > maxAmperage) return 3;
+        if(minVoltage > maxVoltage) return 4;
         return -1;
     }
 
@@ -83,21 +83,21 @@ public class Sensor {
         return -1;
     }
 
-    public String getInvalidMessage(int error) {
+    public static String getInvalidMessage(int error) {
         switch (error) {
             case 1:
                 return "Il modello non può essere vuoto!";
             case 2:
                 return "Il modello non può contenere spazi vuoti!";
             case 3:
-                return "Il campo \"Amperaggio minimo\" deve essere inferiore al campo \"Amperaggio massimo\" ";
+                return "Il campo \"Amperaggio minimo\" deve essere inferiore al campo \"Amperaggio massimo\"";
             case 4:
-                return "Il \"Voltaggio minimo\" deve essere inferiore al \"Voltaggio massimo\" ";
+                return "Il \"Voltaggio minimo\" deve essere inferiore al \"Voltaggio massimo\"";
         }
         return null;
     }
 
-    public String getIncompatibleMessage(int error, SlotCapabilities capabilities) {
+    public static String getIncompatibleMessage(int error, SlotCapabilities capabilities) {
         switch (error) {
             case 5:
                 return "Il campo \"Amperaggio minimo\" deve inferiore o uguale alla capacità dello slot a cui è collegato (" + capabilities.amperage + "A)";
