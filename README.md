@@ -132,7 +132,7 @@ Abbiamo ottenuto il `100%` di coverage nei nostri unit test per quanto riguarda 
 
 
 
-## End to End testing
+End to End testing
 
 Di seguito riportiamo, per ciascuno scenario descritto in precedenza, gli E2E test relativi e una piccola descrizione delle operazioni svolte. Ricordiamo che lo scenario 1.1 riguarda il caricamento della configurazione, quindi non è stato testato in questa sezione.
 
@@ -227,3 +227,11 @@ Abbiamo ottenuto il `100%` di coverage nei nostri end-to-end test per quanto rig
 
 [testSlotDetachCorrect]: https://github.com/c0c4i/satella/blob/main/src/test/java/it/univr/satella/e2e/SlotDetachTest.java#L33
 [testSlotNotFoundDetach]: https://github.com/c0c4i/satella/blob/main/src/test/java/it/univr/satella/e2e/SlotDetachTest.java#L45
+
+
+
+#### Configurazione per i test end-to-end
+
+Per eseguire i test `end-to-end` è necessario importare i driver per il proprio browser nella cartella `src/test/resources/drivers/{browser}_{platform}_{version}/`.
+
+Ad esempio `src/test/resources/drivers/chromedriver_win32_110/`.
