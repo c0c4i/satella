@@ -34,7 +34,11 @@ public class SensorViewTest {
     public void testListSensors() {
         driver.get("http://localhost:8080/slots");
         SlotListPage slotListPage = new SlotListPage(driver);
+        assertTrue(slotListPage.isCurrentPage());
+
         SensorListPage sensorListPage = slotListPage.clickSensorList();
+        assertTrue(sensorListPage.isCurrentPage());
+
         assertTrue(sensorListPage.hasSensorWithModel("sensor-1"));
         assertTrue(sensorListPage.hasSensorWithModel("sensor-2"));
         assertTrue(sensorListPage.hasSensorWithModel("sensor-3"));
@@ -44,6 +48,9 @@ public class SensorViewTest {
     public void testListSensorsGoToSlots() {
         driver.get("http://localhost:8080/sensors");
         SensorListPage sensorListPage = new SensorListPage(driver);
+        assertTrue(sensorListPage.isCurrentPage());
+
         SlotListPage slotListPage = sensorListPage.clickSlotList();
+        assertTrue(slotListPage.isCurrentPage());
     }
 }

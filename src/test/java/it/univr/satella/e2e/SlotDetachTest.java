@@ -33,7 +33,11 @@ public class SlotDetachTest {
     public void testSlotDetachCorrect() {
         driver.get("http://localhost:8080/slots/0/connect/sensor-1");
         SlotListPage slotListPage = new SlotListPage(driver);
+        assertTrue(slotListPage.isCurrentPage());
+
         slotListPage = slotListPage.clickDetachSensor(0);
+        assertTrue(slotListPage.isCurrentPage());
+
         assertTrue(slotListPage.hasNotificationWithId("alert-success-2"));
     }
 
@@ -41,6 +45,8 @@ public class SlotDetachTest {
     public void testSlotNotFoundDetach() {
         driver.get("http://localhost:8080/slots/999/disconnect");
         SlotListPage slotListPage = new SlotListPage(driver);
+        assertTrue(slotListPage.isCurrentPage());
+
         assertTrue(slotListPage.hasNotificationWithId("alert-error-4"));
     }
 }

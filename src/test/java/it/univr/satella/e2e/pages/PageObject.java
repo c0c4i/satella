@@ -13,11 +13,9 @@ public abstract class PageObject {
     public PageObject(WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
-
-        assertTrue(correctPage());
     }
 
-    public boolean correctPage() {
+    public boolean isCurrentPage() {
         return false;
     }
 

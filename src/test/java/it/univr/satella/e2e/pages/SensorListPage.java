@@ -20,7 +20,7 @@ public class SensorListPage extends PageObject {
     }
 
     @Override
-    public boolean correctPage() {
+    public boolean isCurrentPage() {
         return driver.findElement(By.id("title"))
                 .getText().equals("Tutti i sensori");
     }

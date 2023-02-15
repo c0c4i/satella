@@ -15,7 +15,7 @@ public class SensorSelectPage extends PageObject {
     }
 
     @Override
-    public boolean correctPage() {
+    public boolean isCurrentPage() {
         return driver.findElement(By.id("title"))
                 .getText().equals("Seleziona un sensore");
     }

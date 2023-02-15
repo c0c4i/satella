@@ -35,9 +35,13 @@ public class SlotAttachTest {
     public void testSlotAttachCorrect() {
         driver.get("http://localhost:8080/slots");
         SlotListPage slotListPage = new SlotListPage(driver);
+        assertTrue(slotListPage.isCurrentPage());
 
         SensorSelectPage sensorSelectPage = slotListPage.clickAttachSensor(0);
+        assertTrue(sensorSelectPage.isCurrentPage());
+
         slotListPage = sensorSelectPage.clickSelect("sensor-1");
+        assertTrue(slotListPage.isCurrentPage());
 
         assertTrue(slotListPage.slotHasAttachedSensor(0, "sensor-1"));
         assertTrue(slotListPage.hasNotificationWithId("alert-success-1"));
@@ -47,6 +51,8 @@ public class SlotAttachTest {
     public void testSlotNotFoundAttach() {
         driver.get("http://localhost:8080/slots/999/disconnect");
         SlotListPage slotListPage = new SlotListPage(driver);
+        assertTrue(slotListPage.isCurrentPage());
+
         assertTrue(slotListPage.hasNotificationWithId("alert-error-4"));
     }
 
@@ -54,6 +60,8 @@ public class SlotAttachTest {
     public void testSlotAttachSensorNotFound() {
         driver.get("http://localhost:8080/slots/0/connect/not-existent");
         SlotListPage slotListPage = new SlotListPage(driver);
+        assertTrue(slotListPage.isCurrentPage());
+
         assertTrue(slotListPage.hasNotificationWithId("alert-error-2"));
     }
 
@@ -61,6 +69,8 @@ public class SlotAttachTest {
     public void testSlotAttachSensorNotCompatible() {
         driver.get("http://localhost:8080/slots/0/connect/sensor-3");
         SlotListPage slotListPage = new SlotListPage(driver);
+        assertTrue(slotListPage.isCurrentPage());
+
         assertTrue(slotListPage.hasNotificationWithId("alert-error-3"));
     }
 
@@ -68,13 +78,18 @@ public class SlotAttachTest {
     public void testSlotAttachCancel() {
         driver.get("http://localhost:8080/slots/0/connect");
         SensorSelectPage sensorSelectPage = new SensorSelectPage(driver);
+        assertTrue(sensorSelectPage.isCurrentPage());
+
         SlotListPage slotListPage = sensorSelectPage.clickCancel();
+        assertTrue(slotListPage.isCurrentPage());
     }
 
     @Test
     public void testSlotAttachShowOnlyCompatible() {
         driver.get("http://localhost:8080/slots/0/connect");
         SensorSelectPage sensorSelectPage = new SensorSelectPage(driver);
+        assertTrue(sensorSelectPage.isCurrentPage());
+
         assertFalse(sensorSelectPage.hasSensorWithModel("sensor-3"));
     }
 }
