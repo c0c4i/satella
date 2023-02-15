@@ -48,7 +48,7 @@ public class ManageSensorController {
                 return new RedirectView("/sensors/" + sensor.getModelName());
             }
 
-            SlotCapabilities slotCapabilities = slotService.getSlotCapabilitesFromSensor(sensor);
+            SlotCapabilities slotCapabilities = slotService.getSlotCapabilitiesFromSensor(sensor);
             if(slotCapabilities != null) {
                 int compatible = sensor.isCompatible(slotCapabilities);
                 if (compatible != -1) {

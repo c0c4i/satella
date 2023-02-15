@@ -60,18 +60,15 @@ public class SlotService {
         }
     }
 
-    /**
-     * Retrieves all the loaded slots
-     */
     public List<Slot> getSlots() {
         return slots.values().stream().toList();
     }
-
     public Slot getSlotByPort(int port) {
         return slots.get(port);
     }
 
-    public SlotCapabilities getSlotCapabilitesFromSensor(Sensor sensor) {
+
+    public SlotCapabilities getSlotCapabilitiesFromSensor(Sensor sensor) {
         List<Slot> result = slots.values().stream().filter(slot -> {
             Sensor attached = slot.getAttachedSensor();
             if(attached == null) return false;
@@ -100,10 +97,7 @@ public class SlotService {
         // Get target slot
         if (slots.containsKey(slotID)) {
             Slot targetSlot = slots.get(slotID);
-            if (sensor.isCompatible(targetSlot.getCapabilities()) == -1) {
-                targetSlot.attachSensor(sensor);
-                return true;
-            }
+            return targetSlot.attachSensor(sensor);
         }
         return false;
     }

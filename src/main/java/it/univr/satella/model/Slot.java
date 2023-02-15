@@ -30,8 +30,12 @@ public class Slot {
         return slotCapabilities;
     }
 
-    public void attachSensor(Sensor sensor) {
-        attachedSensor = sensor;
+    public boolean attachSensor(Sensor sensor) {
+        if (sensor.isCompatible(slotCapabilities) == -1) {
+            attachedSensor = sensor;
+            return true;
+        }
+        return false;
     }
 
     public boolean hasAttachedSensor() {
