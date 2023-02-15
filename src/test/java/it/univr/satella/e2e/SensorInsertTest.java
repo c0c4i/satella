@@ -60,7 +60,7 @@ public class SensorInsertTest {
         insertSensorPage.clickInsert(); // Should remain in the same page
         assertTrue(insertSensorPage.isCurrentPage());
 
-        assertTrue(insertSensorPage.hasNotificationWithId("form-validation-error-6"));
+        assertTrue(insertSensorPage.hasNotificationWithId("form-validation-error-4"));
     }
 
     @Test

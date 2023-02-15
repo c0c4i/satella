@@ -31,7 +31,7 @@
         <form th:action="'/sensors/' + ${form.modelName} + '/update'" th:object="${form}" class="row g-3" method="post">
             <div class="col-12">
                 <label for="modelName" class="form-label">Model</label>
-                <input type="text" class="form-control" id="modelName" name="modelName" th:field="*{modelName}">
+                <input type="text" class="form-control" id="modelName" name="modelName" th:field="*{modelName}" readonly>
             </div>
             <div class="col-md-6">
                 <label for="minAmperage" class="form-label">Amperaggio minimo</label>

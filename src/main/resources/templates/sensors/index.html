@@ -55,7 +55,7 @@
                     </div>
                     <div class="col-md-auto">
                         <!-- Call controller to view and edit {sensor} details -->
-                        <a href="/sensors/_id" th:href="'/sensors/' + ${sensor.modelName}" id="action-sensor-details"
+                        <a href="/sensors/_id" th:href="'/sensors/' + ${sensor.modelName}" th:id="'action-sensor-details-'+${sensor.modelName}"
                             class="btn btn-primary"> Modifica
                         </a>
                     </div>

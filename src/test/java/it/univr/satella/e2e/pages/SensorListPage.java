@@ -39,4 +39,9 @@ public class SensorListPage extends PageObject {
         return new SlotListPage(driver);
     }
 
+    public ModifySensorPage clickModifySensor(String modelName) {
+        driver.findElement(By.id("action-sensor-details-" + modelName)).click();
+        return new ModifySensorPage(driver, modelName);
+    }
+
 }
