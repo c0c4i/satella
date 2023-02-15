@@ -128,7 +128,7 @@ Abbiamo verificato la code coverage dei nostri test attraverso il tool integrato
 
 Abbiamo ottenuto il `100%` di coverage nei nostri unit test per quanto riguarda i `model`  e `service`.
 
-È possibile consultare il report di coverage [qui](test/unit-report/index.html).
+È possibile consultare il report di coverage in `test/unit-report`.
 
 
 
@@ -140,7 +140,7 @@ Di seguito riportiamo, per ciascuno scenario descritto in precedenza, gli E2E te
 
 Abbiamo ottenuto il `100%` di coverage nei nostri end-to-end test per quanto riguarda i `controllers`. 
 
-È possibile consultare il report di coverage [qui](test/e2e-report/index.html).
+È possibile consultare il report di coverage in `test/e2e-report`.
 
 
 
