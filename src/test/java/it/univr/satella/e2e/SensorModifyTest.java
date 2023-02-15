@@ -91,4 +91,18 @@ public class SensorModifyTest {
 
         assertTrue(modifySensorPage.hasNotificationWithId("form-validation-error-7"));
     }
+
+    @Test
+    public void testSensorModifyCancel() {
+
+        driver.get("http://localhost:8080/sensors");
+        SensorListPage sensorListPage = new SensorListPage(driver);
+        assertTrue(sensorListPage.isCurrentPage());
+
+        ModifySensorPage modifySensorPage = sensorListPage.clickModifySensor("sensor-1");
+        assertTrue(modifySensorPage.isCurrentPage());
+
+        sensorListPage = modifySensorPage.clickCancel();
+        assertTrue(sensorListPage.isCurrentPage());
+    }
 }
