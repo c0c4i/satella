@@ -1,0 +1,259 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Sensor</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.univr.satella.model</a>
+</div>
+
+<h1>Coverage Summary for Class: Sensor (it.univr.satella.model)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Sensor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (43/43)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Sensor$HibernateProxy$nay48dn2</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (43/43)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.univr.satella.model;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.annotation.JsonProperty;
+&nbsp;import jakarta.persistence.Entity;
+&nbsp;import jakarta.persistence.Id;
+&nbsp;
+&nbsp;/**
+&nbsp; * Describes the capability of a sensor, that is its limits,
+&nbsp; */
+&nbsp;@Entity
+&nbsp;public class Sensor {
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @JsonProperty(&quot;model&quot;)
+&nbsp;    private String modelName;
+&nbsp;
+&nbsp;    @JsonProperty(&quot;min_voltage&quot;)
+&nbsp;    private float minVoltage;
+&nbsp;
+&nbsp;    @JsonProperty(&quot;max_voltage&quot;)
+&nbsp;    private float maxVoltage;
+&nbsp;
+&nbsp;    @JsonProperty(&quot;min_amperage&quot;)
+&nbsp;    private float minAmperage;
+&nbsp;
+&nbsp;    @JsonProperty(&quot;max_amperage&quot;)
+&nbsp;    private float maxAmperage;
+&nbsp;
+&nbsp;    public void setModelName(String modelName) {
+<b class="fc">&nbsp;        this.modelName = modelName;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMinVoltage(float minVoltage) {
+<b class="fc">&nbsp;        this.minVoltage = minVoltage;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMaxVoltage(float maxVoltage) {
+<b class="fc">&nbsp;        this.maxVoltage = maxVoltage;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMinAmperage(float minAmperage) {
+<b class="fc">&nbsp;        this.minAmperage = minAmperage;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMaxAmperage(float maxAmperage) {
+<b class="fc">&nbsp;        this.maxAmperage = maxAmperage;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public Sensor() { }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a new sensor descriptor
+&nbsp;     */
+&nbsp;    public Sensor(String modelName, float minVoltage, float maxVoltage, float minAmperage, float maxAmperage)
+<b class="fc">&nbsp;    {</b>
+<b class="fc">&nbsp;        this.modelName = modelName;</b>
+<b class="fc">&nbsp;        this.minVoltage = minVoltage;</b>
+<b class="fc">&nbsp;        this.maxVoltage = maxVoltage;</b>
+<b class="fc">&nbsp;        this.minAmperage = minAmperage;</b>
+<b class="fc">&nbsp;        this.maxAmperage = maxAmperage;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks that the descriptor is coherent
+&nbsp;     */
+&nbsp;    public int isValid() {
+<b class="fc">&nbsp;        if(modelName == null) return 1;</b>
+<b class="fc">&nbsp;        if(!checkStringWithoutSpaces(modelName)) return 2;</b>
+<b class="fc">&nbsp;        if(minAmperage &gt; maxAmperage) return 3;</b>
+<b class="fc">&nbsp;        if(minVoltage &gt; maxVoltage) return 4;</b>
+<b class="fc">&nbsp;        return -1;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Return true if the slot is compatible with this
+&nbsp;     * sensor
+&nbsp;     */
+&nbsp;    public int isCompatible(SlotCapabilities capabilities) {
+<b class="fc">&nbsp;        if(minAmperage &gt; capabilities.amperage) return 5;</b>
+<b class="fc">&nbsp;        if(maxAmperage &lt; capabilities.amperage) return 6;</b>
+<b class="fc">&nbsp;        if(minVoltage &gt; capabilities.voltage) return 7;</b>
+<b class="fc">&nbsp;        if(maxVoltage &lt; capabilities.voltage) return 8;</b>
+<b class="fc">&nbsp;        return -1;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static String getInvalidMessage(int error) {
+<b class="fc">&nbsp;        switch (error) {</b>
+&nbsp;            case 1:
+<b class="fc">&nbsp;                return &quot;Il modello non può essere vuoto!&quot;;</b>
+&nbsp;            case 2:
+<b class="fc">&nbsp;                return &quot;Il modello non può contenere spazi vuoti!&quot;;</b>
+&nbsp;            case 3:
+<b class="fc">&nbsp;                return &quot;Il campo \&quot;Amperaggio minimo\&quot; deve essere inferiore al campo \&quot;Amperaggio massimo\&quot;&quot;;</b>
+&nbsp;            case 4:
+<b class="fc">&nbsp;                return &quot;Il \&quot;Voltaggio minimo\&quot; deve essere inferiore al \&quot;Voltaggio massimo\&quot;&quot;;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static String getIncompatibleMessage(int error, SlotCapabilities capabilities) {
+<b class="fc">&nbsp;        switch (error) {</b>
+&nbsp;            case 5:
+<b class="fc">&nbsp;                return &quot;Il campo \&quot;Amperaggio minimo\&quot; deve inferiore o uguale alla capacità dello slot a cui è collegato (&quot; + capabilities.amperage + &quot;A)&quot;;</b>
+&nbsp;            case 6:
+<b class="fc">&nbsp;                return &quot;Il campo \&quot;Amperaggio massimo\&quot; deve superiore o uguale alla capacità dello slot a cui è collegato (&quot; + capabilities.amperage + &quot;A)&quot;;</b>
+&nbsp;            case 7:
+<b class="fc">&nbsp;                return &quot;Il \&quot;Voltaggio minimo\&quot; deve inferiore o uguale alla capacità dello slot a cui è collegato (&quot; + capabilities.voltage + &quot;V)&quot;;</b>
+&nbsp;            case 8:
+<b class="fc">&nbsp;                return &quot;Il \&quot;Voltaggio massimo\&quot; deve superiore o uguale alla capacità dello slot a cui è collegato (&quot; + capabilities.voltage + &quot;V)&quot;;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private static boolean checkStringWithoutSpaces(String input) {
+<b class="fc">&nbsp;        for (int i = 0; i &lt; input.length(); i++) {</b>
+<b class="fc">&nbsp;            if (input.charAt(i) == &#39; &#39;) {</b>
+<b class="fc">&nbsp;                return false;</b>
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Model of the sensor, this is used as
+&nbsp;     * the identifier.
+&nbsp;     */
+&nbsp;    public String getModelName() {
+<b class="fc">&nbsp;        return modelName;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public float getMinVoltage() {
+<b class="fc">&nbsp;        return minVoltage;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public float getMaxVoltage() {
+<b class="fc">&nbsp;        return maxVoltage;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public float getMinAmperage() {
+<b class="fc">&nbsp;        return minAmperage;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public float getMaxAmperage() {
+<b class="fc">&nbsp;        return maxAmperage;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-15 18:18</div>
+</div>
+</body>
+</html>

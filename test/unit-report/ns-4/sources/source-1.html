@@ -1,0 +1,194 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > SensorService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.univr.satella.service</a>
+</div>
+
+<h1>Coverage Summary for Class: SensorService (it.univr.satella.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SensorService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (23/23)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.univr.satella.service;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+&nbsp;import it.univr.satella.model.Sensor;
+&nbsp;import it.univr.satella.model.SlotCapabilities;
+&nbsp;import it.univr.satella.repository.SensorRepository;
+&nbsp;import jakarta.annotation.PostConstruct;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.core.env.Environment;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.nio.file.Paths;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Arrays;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;
+&nbsp;/**
+&nbsp; * Loader responsible of loading all sensor descriptors
+&nbsp; */
+&nbsp;@Service
+&nbsp;public class SensorService {
+&nbsp;
+&nbsp;    private final Environment environment;
+&nbsp;    private final SensorRepository sensorRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    public SensorService(
+&nbsp;            Environment environment,
+&nbsp;            SensorRepository sensorRepository)
+<b class="fc">&nbsp;    {</b>
+<b class="fc">&nbsp;        this.sensorRepository = sensorRepository;</b>
+<b class="fc">&nbsp;        this.environment = environment;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostConstruct
+&nbsp;    public void loadSensorsAtDefaultPath() {
+<b class="fc">&nbsp;        String filepath = environment.getProperty(&quot;filepath.sensors&quot;);</b>
+<b class="fc">&nbsp;        if (filepath != null)</b>
+<b class="fc">&nbsp;            loadSensors(filepath);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Inserts in the repository all descriptors
+&nbsp;     * in the sensors.json file
+&nbsp;     */
+&nbsp;    public boolean loadSensors(String filepath) {
+&nbsp;        try {
+<b class="fc">&nbsp;            ObjectMapper mapper = new ObjectMapper();</b>
+<b class="fc">&nbsp;            Sensor[] sensors = mapper.readValue(</b>
+<b class="fc">&nbsp;                    Paths.get(filepath).toFile(),</b>
+&nbsp;                    Sensor[].class
+&nbsp;            );
+&nbsp;
+<b class="fc">&nbsp;            for (Sensor sensor : sensors)</b>
+<b class="fc">&nbsp;                if (sensor.isValid() == -1)</b>
+<b class="fc">&nbsp;                    sensorRepository.save(sensor);</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (IOException e) {</b>
+<b class="fc">&nbsp;            return false;</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns all sensors compatible with a slot
+&nbsp;     * @param capabilities Capabilities that need o be matched
+&nbsp;     */
+&nbsp;    public List&lt;Sensor&gt; findAllCompatible(SlotCapabilities capabilities) {
+<b class="fc">&nbsp;        return sensorRepository.findAll().stream()</b>
+<b class="fc">&nbsp;                .filter(x -&gt; x.isCompatible(capabilities) == -1)</b>
+<b class="fc">&nbsp;                .toList();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Sensor findSensorByModelName(String modelName) {
+<b class="fc">&nbsp;        return sensorRepository.findByModelName(modelName);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Sensor&gt; findAll() {
+<b class="fc">&nbsp;        return sensorRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addSensor(Sensor sensor) {
+<b class="fc">&nbsp;         sensorRepository.save(sensor);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void deleteSensor(Sensor sensor) {
+<b class="fc">&nbsp;        sensorRepository.delete(sensor);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-15 18:18</div>
+</div>
+</body>
+</html>

@@ -116,15 +116,33 @@ I tests selezionati hanno sia l’obiettivo di simulare il comportamento reale d
 
 Tutte le classi che presentano almeno un metodo hanno associato un loro unit test. Queste sono divise fra classi del modello, presenti [qui](
 src/test/java/it/univr/satella/model), e i service, presenti [qui](src/test/java/it/univr/satella/service).
-Ci siamo assicurati di testare ogni metodo, compresi getters e setters. Inoltre ci siamo concentrati sul corretto caricamento dei file di configurazione all'avvio dei service `SlotService` e `SensorService`. Questo è essenziale per assicurare il corretto comportamento nel caso dello scenario 1.1. 
+Ci siamo assicurati di testare ogni metodo, compresi getters e setters. Inoltre ci siamo concentrati sul corretto caricamento dei file di configurazione all'avvio dei service `SlotService` e `SensorService`. Questo è essenziale per assicurare il corretto comportamento nel caso dello scenario 1.1.
+
+
 
 ## Code Coverage
 
 Abbiamo verificato la code coverage dei nostri test attraverso il tool integrato di IntelliJ.
 
+![unit-testing-code-coverage](documentation/assets/unit-testing-code-coverage.png)
+
+Abbiamo ottenuto il `100%` di coverage nei nostri unit test per quanto riguarda i `model`  e `service`.
+
+È possibile consultare il report di coverage [qui](test/unit-report/index.html).
+
+
+
 ## End to End testing
 
 Di seguito riportiamo, per ciascuno scenario descritto in precedenza, gli E2E test relativi e una piccola descrizione delle operazioni svolte. Ricordiamo che lo scenario 1.1 riguarda il caricamento della configurazione, quindi non è stato testato in questa sezione.
+
+![e2e-testing-code-coverage](documentation/assets/e2e-testing-code-coverage.png)
+
+Abbiamo ottenuto il `100%` di coverage nei nostri end-to-end test per quanto riguarda i `controllers`. 
+
+È possibile consultare il report di coverage [qui](test/e2e-report/index.html).
+
+
 
 ### 2.1 Aggiungere un sensore
 

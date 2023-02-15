@@ -1,0 +1,235 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > SlotService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.univr.satella.service</a>
+</div>
+
+<h1>Coverage Summary for Class: SlotService (it.univr.satella.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SlotService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (43/43)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.univr.satella.service;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+&nbsp;import it.univr.satella.model.Sensor;
+&nbsp;import it.univr.satella.model.Slot;
+&nbsp;import it.univr.satella.model.SlotCapabilities;
+&nbsp;import jakarta.annotation.PostConstruct;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.core.env.Environment;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.nio.file.Paths;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * Manages all slots
+&nbsp; */
+&nbsp;@Service
+&nbsp;public class SlotService {
+&nbsp;
+&nbsp;    private final Environment environment;
+&nbsp;    private HashMap&lt;Integer, Slot&gt; slots;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    public SlotService(Environment environment)
+<b class="fc">&nbsp;    {</b>
+<b class="fc">&nbsp;        this.environment = environment;</b>
+<b class="fc">&nbsp;        this.slots = new HashMap&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostConstruct
+&nbsp;    public void loadSlotsAtDefaultPath() {
+<b class="fc">&nbsp;        String filepath = environment.getProperty(&quot;filepath.slots&quot;);</b>
+<b class="fc">&nbsp;        if (filepath != null)</b>
+<b class="fc">&nbsp;            loadSlots(filepath);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Load all slots present in the filepath
+&nbsp;     * @param filepath Filepath of the file to load
+&nbsp;     */
+&nbsp;    public void loadSlots(String filepath) {
+&nbsp;        try {
+<b class="fc">&nbsp;            ObjectMapper mapper = new ObjectMapper();</b>
+<b class="fc">&nbsp;            SlotCapabilities[] slotCapabilities = mapper.readValue(</b>
+<b class="fc">&nbsp;                    Paths.get(filepath).toFile(),</b>
+&nbsp;                    SlotCapabilities[].class
+&nbsp;            );
+&nbsp;
+<b class="fc">&nbsp;            slots = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;            for (int id = 0; id &lt; slotCapabilities.length; id++)</b>
+<b class="fc">&nbsp;                slots.put(id, new Slot(id, slotCapabilities[id]));</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (IOException e) {</b>
+<b class="fc">&nbsp;            int a = 0;</b>
+&nbsp;            // TODO
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Slot&gt; getSlots() {
+<b class="fc">&nbsp;        return slots.values().stream().toList();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Slot getSlotByPort(int port) {
+<b class="fc">&nbsp;        return slots.get(port);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public SlotCapabilities getSlotCapabilitiesFromSensor(Sensor sensor) {
+<b class="fc">&nbsp;        List&lt;Slot&gt; result = slots.values().stream().filter(slot -&gt; {</b>
+<b class="fc">&nbsp;            Sensor attached = slot.getAttachedSensor();</b>
+<b class="fc">&nbsp;            if(attached == null) return false;</b>
+<b class="fc">&nbsp;            return attached.getModelName().equals(sensor.getModelName());</b>
+<b class="fc">&nbsp;        }).toList();</b>
+<b class="fc">&nbsp;        if(result.size() == 0) return null;</b>
+<b class="fc">&nbsp;        return result.get(0).getCapabilities();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Manually set a slot
+&nbsp;     */
+&nbsp;    public void setSlot(int id, Slot slot) {
+<b class="fc">&nbsp;        slots.put(id, slot);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Tries to attach a sensor to a slot in the station
+&nbsp;     * @param slotID ID of the target slot
+&nbsp;     * @param sensor sensor to be attached
+&nbsp;     * @return true un success, false otherwise
+&nbsp;     */
+&nbsp;    public boolean attachSensorToSlot(int slotID, Sensor sensor) {
+&nbsp;
+&nbsp;        // Get target slot
+<b class="fc">&nbsp;        if (slots.containsKey(slotID)) {</b>
+<b class="fc">&nbsp;            Slot targetSlot = slots.get(slotID);</b>
+<b class="fc">&nbsp;            return targetSlot.attachSensor(sensor);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Tries to detach a sensor from a slot
+&nbsp;     * @param slotID ID of the target slot
+&nbsp;     * @return true on success, false otherwise
+&nbsp;     */
+&nbsp;    public boolean detachSensorFromSlot(int slotID) {
+<b class="fc">&nbsp;        if (slots.containsKey(slotID)) {</b>
+<b class="fc">&nbsp;            Slot slot = slots.get(slotID);</b>
+<b class="fc">&nbsp;            slot.detachSensor();</b>
+<b class="fc">&nbsp;            return true;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void removeSensorFromSlots(Sensor sensor) {
+<b class="fc">&nbsp;        List&lt;Slot&gt; result = slots.values().stream().filter(slot -&gt; {</b>
+<b class="fc">&nbsp;            Sensor attached = slot.getAttachedSensor();</b>
+<b class="fc">&nbsp;            if(attached == null) return false;</b>
+<b class="fc">&nbsp;            return attached.getModelName().equals(sensor.getModelName());</b>
+<b class="fc">&nbsp;        }).toList();</b>
+&nbsp;
+<b class="fc">&nbsp;        if(result.size() == 0) return;</b>
+&nbsp;
+<b class="fc">&nbsp;        for (Slot slot: result) {</b>
+<b class="fc">&nbsp;            slot.detachSensor();</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-15 18:18</div>
+</div>
+</body>
+</html>
