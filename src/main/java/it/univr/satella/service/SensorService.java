@@ -84,4 +84,8 @@ public class SensorService {
     public void addSensor(Sensor sensor) {
          sensorRepository.save(sensor);
     }
+
+    public void deleteSensor(Sensor sensor) {
+        sensorRepository.delete(sensor);
+    }
 }

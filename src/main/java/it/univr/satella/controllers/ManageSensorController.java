@@ -38,7 +38,7 @@ public class ManageSensorController {
     @PostMapping("/sensors/{id}/update")
     public RedirectView manage(
         @ModelAttribute("form") Sensor sensor,
-            RedirectAttributes attributes, Model model) {
+            RedirectAttributes attributes) {
 
             int validate = sensor.isValid();
             if(validate != -1) {
@@ -63,5 +63,21 @@ public class ManageSensorController {
             attributes.addFlashAttribute("successType", 1);
             attributes.addFlashAttribute("success", "Sensore aggiornato con successo!");
             return new RedirectView("/sensors");
+    }
+
+    @GetMapping("/sensors/{id}/delete")
+    public RedirectView manage(@PathVariable("id") String modelName, RedirectAttributes attributes) {
+        Sensor sensor = sensorService.findSensorByModelName(modelName);
+        if(sensor == null) {
+            attributes.addFlashAttribute("errorType", 1);
+            attributes.addFlashAttribute("error", "Il sensore selezionato non esiste!");
+            return new RedirectView("/sensors");
+        }
+
+        slotService.removeSensorFromSlots(sensor);
+        sensorService.deleteSensor(sensor);
+        attributes.addFlashAttribute("successType", 2);
+        attributes.addFlashAttribute("success", "Sensore eliminato con successo!");
+        return new RedirectView("/sensors");
     }
 }
