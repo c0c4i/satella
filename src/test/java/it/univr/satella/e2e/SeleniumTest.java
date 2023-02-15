@@ -24,6 +24,7 @@ import static org.junit.Assert.*;
         SensorViewTest.class,
         SensorInsertTest.class,
         SensorModifyTest.class,
+        SensorRemoveSimpleTest.class,
         SensorRemoveTest.class
 })
 public class SeleniumTest {

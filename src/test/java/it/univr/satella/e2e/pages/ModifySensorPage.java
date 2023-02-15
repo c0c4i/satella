@@ -4,6 +4,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 public class ModifySensorPage extends SensorPage {
 
@@ -25,8 +30,9 @@ public class ModifySensorPage extends SensorPage {
 
     @Override
     public boolean isCurrentPage() {
-        return driver.findElement(By.id("title"))
-                .getText().equals(sensorModel);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.of(10, ChronoUnit.SECONDS));
+        WebElement title = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("title")));
+        return title.getText().equals(sensorModel);
     }
 
     public SensorListPage clickModify() {
